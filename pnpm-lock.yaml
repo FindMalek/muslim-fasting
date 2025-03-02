@@ -61,6 +61,12 @@ importers:
       react-dom:
         specifier: ^19
         version: 19.0.0(react@19.0.0)
+      react-icons:
+        specifier: ^5.1.0
+        version: 5.5.0(react@19.0.0)
+      sonner:
+        specifier: ^2.0.1
+        version: 2.0.1(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
       tailwind-merge:
         specifier: ^3.0.2
         version: 3.0.2
@@ -3137,6 +3143,14 @@ packages:
     peerDependencies:
       react: ^19.0.0
 
+  react-icons@5.5.0:
+    resolution:
+      {
+        integrity: sha512-MEFcXdkP3dLo8uumGI5xN3lDFNsRtrjbOEKDLD7yv76v4wpnEq2Lt2qeHaQOr34I/wPN3s3+N08WkQ+CW37Xiw==,
+      }
+    peerDependencies:
+      react: "*"
+
   react-is@16.13.1:
     resolution:
       {
@@ -3389,6 +3403,15 @@ packages:
       {
         integrity: sha512-JA//kQgZtbuY83m+xT+tXJkmJncGMTFT+C+g2h2R9uxkYIrE2yy9sgmcLhCnw57/WSD+Eh3J97FPEDFnbXnDUg==,
       }
+
+  sonner@2.0.1:
+    resolution:
+      {
+        integrity: sha512-FRBphaehZ5tLdLcQ8g2WOIRE+Y7BCfWi5Zyd8bCvBjiW8TxxAyoWZIxS661Yz6TGPqFQ4VLzOF89WEYhfynSFQ==,
+      }
+    peerDependencies:
+      react: ^18.0.0 || ^19.0.0 || ^19.0.0-rc
+      react-dom: ^18.0.0 || ^19.0.0 || ^19.0.0-rc
 
   source-map-js@1.2.1:
     resolution:
@@ -5808,6 +5831,10 @@ snapshots:
       react: 19.0.0
       scheduler: 0.25.0
 
+  react-icons@5.5.0(react@19.0.0):
+    dependencies:
+      react: 19.0.0
+
   react-is@16.13.1: {}
 
   react-remove-scroll-bar@2.3.8(@types/react@19.0.10)(react@19.0.0):
@@ -6007,6 +6034,11 @@ snapshots:
     dependencies:
       is-arrayish: 0.3.2
     optional: true
+
+  sonner@2.0.1(react-dom@19.0.0(react@19.0.0))(react@19.0.0):
+    dependencies:
+      react: 19.0.0
+      react-dom: 19.0.0(react@19.0.0)
 
   source-map-js@1.2.1: {}
 

@@ -7,9 +7,11 @@ import { siteConfig } from "@/config/site"
 import { cn } from "@/lib/utils"
 
 import { Analytics } from "@/components/layout/analytics"
+import { Footer } from "@/components/layout/footer"
+import { Header } from "@/components/layout/header"
 import { LayoutWrapper } from "@/components/layout/layout-wrapper"
 import { TailwindIndicator } from "@/components/layout/tailwind-indicator"
-import { Toaster } from "@/components/ui/toaster"
+import { Toaster } from "@/components/ui/sonner"
 
 interface RootLayoutProps {
   children: React.ReactNode
@@ -77,7 +79,9 @@ export default function RootLayout({ children }: RootLayoutProps) {
         )}
       >
         <LayoutWrapper>
+          <Header />
           {children}
+          <Footer />
           <Analytics />
           <Toaster />
           <TailwindIndicator />

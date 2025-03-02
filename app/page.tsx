@@ -1,101 +1,85 @@
-import Image from "next/image"
+"use client"
+
+import { useState } from "react"
+
+import { usePrayerTimes } from "@/hooks/use-prayer-times"
+import { useTimezone } from "@/hooks/use-timezone"
+
+import { CountdownTimer } from "@/components/app/countdown-timer"
+import { DailyDua } from "@/components/app/daily-dua"
+import { PrayerTimesDisplay } from "@/components/app/prayer-times-display"
+import { RamadanCalendar } from "@/components/app/ramadan-calendar"
+import { Icons } from "@/components/shared/icons"
+import { Card, CardContent } from "@/components/ui/card"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 
 export default function Home() {
-  return (
-    <div className="grid min-h-screen grid-rows-[20px_1fr_20px] place-items-center gap-16 p-8 pb-20 font-[family-name:var(--font-geist-sans)] sm:p-20">
-      <main className="row-start-2 flex flex-col items-center gap-8 sm:items-start">
-        <Image
-          className="dark:invert"
-          src="https://nextjs.org/icons/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-center font-[family-name:var(--font-geist-mono)] text-sm sm:text-left">
-          <li className="mb-2">
-            Get started by editing{" "}
-            <code className="rounded bg-black/[.05] px-1 py-0.5 font-semibold dark:bg-white/[.06]">
-              app/page.tsx
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
+  const { timezone, setTimezone } = useTimezone()
+  const { prayerTimes, date, setDate } = usePrayerTimes(timezone)
+  const [activeTab, setActiveTab] = useState("times")
 
-        <div className="flex flex-col items-center gap-4 sm:flex-row">
-          <a
-            className="flex h-10 items-center justify-center gap-2 rounded-full border border-solid border-transparent bg-foreground px-4 text-sm text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] sm:h-12 sm:px-5 sm:text-base"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="https://nextjs.org/icons/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="flex h-10 items-center justify-center rounded-full border border-solid border-black/[.08] px-4 text-sm transition-colors hover:border-transparent hover:bg-[#f2f2f2] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] sm:h-12 sm:min-w-44 sm:px-5 sm:text-base"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+  return (
+    <div className="container mx-auto px-4 py-8">
+      <div className="mb-8 text-center">
+        <h1 className="mb-2 text-3xl font-bold">Muslim Fasting Friend</h1>
+        <p className="text-muted-foreground">
+          Your companion for Ramadan with accurate prayer times
+        </p>
+        <div className="mt-2 flex items-center justify-center text-sm text-muted-foreground">
+          <Icons.location className="mr-1 size-4" />
+          <span>{timezone}</span>
         </div>
-      </main>
-      <footer className="row-start-3 flex flex-wrap items-center justify-center gap-6">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+      </div>
+
+      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+        <Card className="col-span-full lg:col-span-2">
+          <CardContent className="p-6">
+            <Tabs defaultValue="times" onValueChange={setActiveTab}>
+              <TabsList className="grid w-full grid-cols-3">
+                <TabsTrigger value="times">
+                  <Icons.clock className="mr-2 size-4" />
+                  Prayer Times
+                </TabsTrigger>
+                <TabsTrigger value="calendar">
+                  <Icons.calendar className="mr-2 size-4" />
+                  Calendar
+                </TabsTrigger>
+                <TabsTrigger value="dua">
+                  <Icons.moonStar className="mr-2 size-4" />
+                  Daily Dua
+                </TabsTrigger>
+              </TabsList>
+              <TabsContent value="times" className="mt-6">
+                <PrayerTimesDisplay prayerTimes={prayerTimes} date={date} />
+                <div className="mt-8">
+                  <CountdownTimer
+                    prayerTimes={prayerTimes}
+                    timezone={timezone}
+                  />
+                </div>
+              </TabsContent>
+              <TabsContent value="calendar" className="mt-6">
+                <RamadanCalendar
+                  timezone={timezone}
+                  selectedDate={date}
+                  onDateSelect={setDate}
+                />
+              </TabsContent>
+              <TabsContent value="dua" className="mt-6">
+                <DailyDua date={date} />
+              </TabsContent>
+            </Tabs>
+          </CardContent>
+        </Card>
+
+        {activeTab !== "dua" && (
+          <Card className="col-span-full lg:col-span-1">
+            <CardContent className="p-6">
+              <DailyDua date={date} />
+            </CardContent>
+          </Card>
+        )}
+      </div>
     </div>
   )
 }
