@@ -1,36 +1,52 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+![hero](/public/og.png)
 
-## Getting Started
+<p align="center">
+	<h1 align="center"><b>Muslim Fasting</b></h1>
+	<p align="center">
+		Comprehensive Guide to Islamic Fasting Practices and Traditions
+	</p>
+</p>
 
-First, run the development server:
+## Key Features
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+### 🌙 Prayer Time Tracking
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Accurately track daily prayer times with precise calculations based on your location.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### 📆 Islamic Calendar
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Stay informed with a complete Islamic calendar featuring important dates and fasting periods.
 
-## Learn More
+### 🕋 Fasting Guidelines
 
-To learn more about Next.js, take a look at the following resources:
+Access comprehensive resources on fasting rules, exemptions, and spiritual practices.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### 📊 Personalized Fasting Dashboard
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Track your fasting journey with customizable dashboards to monitor progress and spiritual growth.
 
-## Deploy on Vercel
+### 🍽️ Suhoor & Iftar Reminders
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Never miss your pre-dawn and sunset meals with timely notifications and reminders.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+### 📚 Quranic Insights
+
+Enhance your spiritual journey with daily Quranic verses and explanations related to fasting.
+
+## Tech Stack
+
+- Next.js
+- TypeScript
+- Prisma
+- Supabase
+- Shadcn/UI
+- TailwindCSS
+- Clerk Authentication
+- PNpm
+
+## Infrastructure
+
+### Hosting
+
+- Vercel (Website, functions, edge-config, analytics and metrics)
+- Github (Codebase, issues, PRs, actions)
