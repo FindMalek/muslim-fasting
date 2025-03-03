@@ -84,7 +84,7 @@ export function RamadanCalendar({
       <Button
         key={day}
         variant="ghost"
-        className={`size-10 p-0 ${isToday(day) ? "bg-primary/10 text-primary" : ""} ${isSelected(day) ? "bg-primary text-primary-foreground" : ""}`}
+        className={`size-10 p-0 ${isToday(day) ? "bg-primary/10 text-primary" : ""} ${isSelected(day) ? "bg-primary text-primary-foreground hover:bg-primary/70" : ""}`}
         onClick={() => selectDate(day)}
       >
         {day}
@@ -108,7 +108,7 @@ export function RamadanCalendar({
         </div>
       </div>
 
-      <div className="grid grid-cols-7 gap-1 text-center">
+      <div className="grid grid-cols-7 gap-1 text-center ">
         {daysOfWeek.map((day) => (
           <div
             key={day}

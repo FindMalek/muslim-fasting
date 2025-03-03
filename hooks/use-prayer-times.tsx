@@ -7,11 +7,13 @@ import type { PrayerTimes } from "@/types"
 export function usePrayerTimes(timezone: string, initialDate?: Date) {
   const [date, setDate] = useState<Date>(initialDate || new Date())
   const [prayerTimes, setPrayerTimes] = useState<PrayerTimes | null>(null)
+  const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {
     if (!timezone) return
 
     const calculatePrayerTimes = async () => {
+      setIsLoading(true)
       try {
         // In a real app, you would use a proper prayer times calculation library
         // like adhan-js or make an API call to a prayer times service
@@ -50,6 +52,8 @@ export function usePrayerTimes(timezone: string, initialDate?: Date) {
       } catch (error) {
         console.error("Error calculating prayer times:", error)
         setPrayerTimes(null)
+      } finally {
+        setIsLoading(false)
       }
     }
 
@@ -60,5 +64,6 @@ export function usePrayerTimes(timezone: string, initialDate?: Date) {
     prayerTimes,
     date,
     setDate,
+    isLoading,
   }
 }

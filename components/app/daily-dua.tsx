@@ -30,7 +30,7 @@ export function DailyDua({ date }: DailyDuaProps) {
   }
 
   return (
-    <div className="rounded-lg bg-card text-card-foreground shadow-sm">
+    <div className="rounded-lg bg-card text-card-foreground">
       <div className="flex flex-col space-y-1.5">
         <div className="flex items-center justify-between">
           <h3 className="text-lg font-semibold leading-none tracking-tight">

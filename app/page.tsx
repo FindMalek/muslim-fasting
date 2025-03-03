@@ -5,17 +5,19 @@ import { useState } from "react"
 import { usePrayerTimes } from "@/hooks/use-prayer-times"
 import { useTimezone } from "@/hooks/use-timezone"
 
+import { CountdownSkeleton } from "@/components/app/countdown-skeleton"
 import { CountdownTimer } from "@/components/app/countdown-timer"
 import { DailyDua } from "@/components/app/daily-dua"
 import { PrayerTimesDisplay } from "@/components/app/prayer-times-display"
 import { RamadanCalendar } from "@/components/app/ramadan-calendar"
 import { Icons } from "@/components/shared/icons"
 import { Card, CardContent } from "@/components/ui/card"
+import { Skeleton } from "@/components/ui/skeleton"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 
 export default function Home() {
   const { timezone, setTimezone } = useTimezone()
-  const { prayerTimes, date, setDate } = usePrayerTimes(timezone)
+  const { prayerTimes, date, setDate, isLoading } = usePrayerTimes(timezone)
   const [activeTab, setActiveTab] = useState("times")
 
   return (
@@ -35,7 +37,7 @@ export default function Home() {
         <Card className="col-span-full lg:col-span-2">
           <CardContent className="p-6">
             <Tabs defaultValue="times" onValueChange={setActiveTab}>
-              <TabsList className="grid w-full grid-cols-3">
+              <TabsList className="grid w-full grid-cols-2">
                 <TabsTrigger value="times">
                   <Icons.clock className="mr-2 size-4" />
                   Prayer Times
@@ -44,18 +46,18 @@ export default function Home() {
                   <Icons.calendar className="mr-2 size-4" />
                   Calendar
                 </TabsTrigger>
-                <TabsTrigger value="dua">
-                  <Icons.moonStar className="mr-2 size-4" />
-                  Daily Dua
-                </TabsTrigger>
               </TabsList>
               <TabsContent value="times" className="mt-6">
                 <PrayerTimesDisplay prayerTimes={prayerTimes} date={date} />
                 <div className="mt-8">
-                  <CountdownTimer
-                    prayerTimes={prayerTimes}
-                    timezone={timezone}
-                  />
+                  {isLoading ? (
+                    <CountdownSkeleton />
+                  ) : (
+                    <CountdownTimer
+                      prayerTimes={prayerTimes}
+                      timezone={timezone}
+                    />
+                  )}
                 </div>
               </TabsContent>
               <TabsContent value="calendar" className="mt-6">
@@ -65,20 +67,28 @@ export default function Home() {
                   onDateSelect={setDate}
                 />
               </TabsContent>
-              <TabsContent value="dua" className="mt-6">
-                <DailyDua date={date} />
-              </TabsContent>
             </Tabs>
           </CardContent>
         </Card>
 
-        {activeTab !== "dua" && (
-          <Card className="col-span-full lg:col-span-1">
-            <CardContent className="p-6">
+        <Card className="col-span-full lg:col-span-1">
+          <CardContent className="p-6">
+            {isLoading ? (
+              <div className="space-y-4">
+                <Skeleton className="mx-auto h-6 w-36" />
+                <Card>
+                  <CardContent className="space-y-2 p-4">
+                    <Skeleton className="h-32 w-full" />
+                    <Skeleton className="h-5 w-3/4" />
+                    <Skeleton className="h-5 w-1/2" />
+                  </CardContent>
+                </Card>
+              </div>
+            ) : (
               <DailyDua date={date} />
-            </CardContent>
-          </Card>
-        )}
+            )}
+          </CardContent>
+        </Card>
       </div>
     </div>
   )

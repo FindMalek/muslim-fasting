@@ -6,6 +6,7 @@ import type { PrayerTimes } from "@/types"
 
 import { formatDate } from "@/lib/utils"
 
+import { PrayerTimesSkeleton } from "@/components/app/prayer-times-skeleton"
 import { Card, CardContent } from "@/components/ui/card"
 
 interface PrayerTimesDisplayProps {
@@ -18,11 +19,7 @@ export function PrayerTimesDisplay({
   date,
 }: PrayerTimesDisplayProps) {
   if (!prayerTimes) {
-    return (
-      <div className="p-8 text-center">
-        <p>Loading prayer times...</p>
-      </div>
-    )
+    return <PrayerTimesSkeleton />
   }
 
   const formatPrayerTime = (time: Date | null) => {
