@@ -2,7 +2,7 @@
 
 import { Sunrise, Sunset } from "lucide-react"
 
-import type { PrayerTimes } from "@/types/prayer-times"
+import type { PrayerTimes } from "@/types"
 
 import { formatDate } from "@/lib/utils"
 

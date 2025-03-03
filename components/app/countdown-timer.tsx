@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react"
 import { Sunrise, Sunset } from "lucide-react"
 
-import type { PrayerTimes } from "@/types/prayer-times"
+import type { PrayerTimes } from "@/types"
 
 import { formatTime } from "@/lib/utils"
 

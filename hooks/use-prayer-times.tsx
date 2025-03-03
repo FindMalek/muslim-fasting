@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react"
 
-import type { PrayerTimes } from "@/types/prayer-times"
+import type { PrayerTimes } from "@/types"
 
 export function usePrayerTimes(timezone: string, initialDate?: Date) {
   const [date, setDate] = useState<Date>(initialDate || new Date())

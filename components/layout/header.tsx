@@ -15,8 +15,8 @@ export function Header() {
           </Link>
         </div>
         <div className="flex items-center gap-2">
-          <Settings />
           <ModeToggle />
+          <Settings />
         </div>
       </div>
     </header>
