@@ -4,19 +4,19 @@ import { useState } from "react"
 import { ChevronLeft, ChevronRight } from "lucide-react"
 
 import { formatDateShort } from "@/lib/utils"
+import { useGeolocation } from "@/hooks/use-geolocation"
 import { usePrayerTimes } from "@/hooks/use-prayer-times"
 
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
+import { Skeleton } from "@/components/ui/skeleton"
 
 interface RamadanCalendarProps {
-  timezone: string
   selectedDate: Date
   onDateSelect: (date: Date) => void
 }
 
 export function RamadanCalendar({
-  timezone,
   selectedDate,
   onDateSelect,
 }: RamadanCalendarProps) {
@@ -26,7 +26,16 @@ export function RamadanCalendar({
   const [currentMonth, setCurrentMonth] = useState(today.getMonth())
   const [currentYear, setCurrentYear] = useState(today.getFullYear())
 
-  const { prayerTimes } = usePrayerTimes(timezone, selectedDate)
+  const { latitude, longitude, loading: locationLoading } = useGeolocation()
+
+  const { prayerTimes, isLoading: prayerTimesLoading } = usePrayerTimes({
+    latitude: latitude || 0,
+    longitude: longitude || 0,
+    date: selectedDate,
+    enabled: Boolean(latitude && longitude),
+  })
+
+  const isLoading = locationLoading || prayerTimesLoading
 
   const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate()
   const firstDayOfMonth = new Date(currentYear, currentMonth, 1).getDay()
@@ -108,7 +117,7 @@ export function RamadanCalendar({
         </div>
       </div>
 
-      <div className="grid grid-cols-7 gap-1 text-center ">
+      <div className="grid grid-cols-7 gap-1 text-center">
         {daysOfWeek.map((day) => (
           <div
             key={day}
@@ -120,7 +129,23 @@ export function RamadanCalendar({
         {calendarDays}
       </div>
 
-      {prayerTimes && (
+      {isLoading ? (
+        <Card className="mt-6">
+          <CardContent className="p-4">
+            <Skeleton className="mb-2 h-5 w-36" />
+            <div className="grid grid-cols-2 gap-2">
+              <div>
+                <Skeleton className="mb-1 h-4 w-24" />
+                <Skeleton className="h-5 w-20" />
+              </div>
+              <div>
+                <Skeleton className="mb-1 h-4 w-24" />
+                <Skeleton className="h-5 w-20" />
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      ) : prayerTimes ? (
         <Card className="mt-6">
           <CardContent className="p-4">
             <h3 className="mb-2 font-medium">
@@ -146,6 +171,14 @@ export function RamadanCalendar({
                 </p>
               </div>
             </div>
+          </CardContent>
+        </Card>
+      ) : (
+        <Card className="mt-6">
+          <CardContent className="p-4">
+            <p className="text-center text-muted-foreground">
+              Unable to load prayer times
+            </p>
           </CardContent>
         </Card>
       )}

@@ -1,4 +1,5 @@
 import { clsx, type ClassValue } from "clsx"
+import { format } from "date-fns"
 import { twMerge } from "tailwind-merge"
 
 import { prayerCalculationMethods } from "@/config/consts"
@@ -8,31 +9,25 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 export function formatTime(seconds: number): string {
+  if (seconds <= 0) return "00:00:00"
+
   const hours = Math.floor(seconds / 3600)
-  const minutes = Math.floor((seconds % 3600) / 60)
-  const remainingSeconds = Math.floor(seconds % 60)
+  const mins = Math.floor((seconds % 3600) / 60)
+  const secs = Math.floor(seconds % 60)
 
-  const formattedHours = hours.toString().padStart(2, "0")
-  const formattedMinutes = minutes.toString().padStart(2, "0")
-  const formattedSeconds = remainingSeconds.toString().padStart(2, "0")
-
-  return `${formattedHours}:${formattedMinutes}:${formattedSeconds}`
+  return [
+    hours.toString().padStart(2, "0"),
+    mins.toString().padStart(2, "0"),
+    secs.toString().padStart(2, "0"),
+  ].join(":")
 }
 
 export function formatDate(date: Date): string {
-  return new Intl.DateTimeFormat("en-US", {
-    weekday: "long",
-    year: "numeric",
-    month: "long",
-    day: "numeric",
-  }).format(date)
+  return format(date, "EEEE, MMMM d, yyyy")
 }
 
 export function formatDateShort(date: Date): string {
-  return new Intl.DateTimeFormat("en-US", {
-    month: "short",
-    day: "numeric",
-  }).format(date)
+  return format(date, "MMM d, yyyy")
 }
 
 /**

@@ -1,7 +1,5 @@
 "use client"
 
-import { useState } from "react"
-
 import { usePrayerTimes } from "@/hooks/use-prayer-times"
 import { useTimezone } from "@/hooks/use-timezone"
 
@@ -18,7 +16,6 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 export default function Home() {
   const { timezone, setTimezone } = useTimezone()
   const { prayerTimes, date, setDate, isLoading } = usePrayerTimes(timezone)
-  const [activeTab, setActiveTab] = useState("times")
 
   return (
     <div className="container mx-auto px-4 py-8">
@@ -36,7 +33,7 @@ export default function Home() {
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
         <Card className="col-span-full lg:col-span-2">
           <CardContent className="p-6">
-            <Tabs defaultValue="times" onValueChange={setActiveTab}>
+            <Tabs defaultValue="times">
               <TabsList className="grid w-full grid-cols-2">
                 <TabsTrigger value="times">
                   <Icons.clock className="mr-2 size-4" />
@@ -55,17 +52,14 @@ export default function Home() {
                   ) : (
                     <CountdownTimer
                       prayerTimes={prayerTimes}
-                      timezone={timezone}
+                      isLoading={isLoading}
+                      date={date}
                     />
                   )}
                 </div>
               </TabsContent>
               <TabsContent value="calendar" className="mt-6">
-                <RamadanCalendar
-                  timezone={timezone}
-                  selectedDate={date}
-                  onDateSelect={setDate}
-                />
+                <RamadanCalendar selectedDate={date} onDateSelect={setDate} />
               </TabsContent>
             </Tabs>
           </CardContent>
@@ -75,14 +69,9 @@ export default function Home() {
           <CardContent className="p-6">
             {isLoading ? (
               <div className="space-y-4">
-                <Skeleton className="mx-auto h-6 w-36" />
-                <Card>
-                  <CardContent className="space-y-2 p-4">
-                    <Skeleton className="h-32 w-full" />
-                    <Skeleton className="h-5 w-3/4" />
-                    <Skeleton className="h-5 w-1/2" />
-                  </CardContent>
-                </Card>
+                <Skeleton className="h-32 w-full" />
+                <Skeleton className="h-5 w-3/4" />
+                <Skeleton className="h-5 w-1/2" />
               </div>
             ) : (
               <DailyDua date={date} />

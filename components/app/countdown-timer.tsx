@@ -7,15 +7,22 @@ import type { PrayerTimes } from "@/types"
 
 import { formatTime } from "@/lib/utils"
 
+import { CountdownSkeleton } from "@/components/app/countdown-skeleton"
 import { Card, CardContent } from "@/components/ui/card"
 import { Progress } from "@/components/ui/progress"
 
 interface CountdownTimerProps {
   prayerTimes: PrayerTimes | null
-  timezone: string
+  isLoading: boolean
+  date?: Date
+  timezone?: string // Made optional to be backward compatible
 }
 
-export function CountdownTimer({ prayerTimes, timezone }: CountdownTimerProps) {
+export function CountdownTimer({
+  prayerTimes,
+  isLoading,
+  date,
+}: CountdownTimerProps) {
   const [timeRemaining, setTimeRemaining] = useState<number>(0)
   const [targetTime, setTargetTime] = useState<Date | null>(null)
   const [targetName, setTargetName] = useState<string>("")
@@ -119,11 +126,15 @@ export function CountdownTimer({ prayerTimes, timezone }: CountdownTimerProps) {
     return () => clearInterval(interval)
   }, [prayerTimes, targetTime])
 
+  if (isLoading) {
+    return <CountdownSkeleton />
+  }
+
   if (!prayerTimes) {
     return (
       <Card>
         <CardContent className="p-6">
-          <p className="text-center">Loading countdown...</p>
+          <p className="text-center">Unable to load prayer times</p>
         </CardContent>
       </Card>
     )
