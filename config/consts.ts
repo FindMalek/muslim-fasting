@@ -138,3 +138,102 @@ export const ramadanDuas = [
     source: "Tirmidhi",
   },
 ]
+
+export const timezoneOptions = [
+  // Middle East & Gulf
+  { value: "Asia/Riyadh", name: "Riyadh (Saudi Arabia)" },
+  { value: "Asia/Makkah", name: "Makkah (Saudi Arabia)" },
+  { value: "Asia/Madinah", name: "Madinah (Saudi Arabia)" },
+  { value: "Asia/Dubai", name: "Dubai (UAE)" },
+  { value: "Asia/Abu_Dhabi", name: "Abu Dhabi (UAE)" },
+  { value: "Asia/Qatar", name: "Doha (Qatar)" },
+  { value: "Asia/Kuwait", name: "Kuwait City (Kuwait)" },
+  { value: "Asia/Bahrain", name: "Manama (Bahrain)" },
+  { value: "Asia/Muscat", name: "Muscat (Oman)" },
+  { value: "Asia/Amman", name: "Amman (Jordan)" },
+  { value: "Asia/Jerusalem", name: "Jerusalem (Palestine)" },
+  { value: "Asia/Beirut", name: "Beirut (Lebanon)" },
+  { value: "Asia/Damascus", name: "Damascus (Syria)" },
+  { value: "Asia/Baghdad", name: "Baghdad (Iraq)" },
+  { value: "Asia/Tehran", name: "Tehran (Iran)" },
+  { value: "Asia/Aden", name: "Aden (Yemen)" },
+
+  // South & Southeast Asia
+  { value: "Asia/Karachi", name: "Karachi (Pakistan)" },
+  { value: "Asia/Lahore", name: "Lahore (Pakistan)" },
+  { value: "Asia/Islamabad", name: "Islamabad (Pakistan)" },
+  { value: "Asia/Dhaka", name: "Dhaka (Bangladesh)" },
+  { value: "Asia/Kolkata", name: "Mumbai/Delhi (India)" },
+  { value: "Asia/Jakarta", name: "Jakarta (Indonesia)" },
+  { value: "Asia/Kuala_Lumpur", name: "Kuala Lumpur (Malaysia)" },
+  { value: "Asia/Singapore", name: "Singapore" },
+  { value: "Asia/Brunei", name: "Bandar Seri Begawan (Brunei)" },
+  { value: "Asia/Manila", name: "Manila (Philippines)" },
+  { value: "Asia/Kabul", name: "Kabul (Afghanistan)" },
+  { value: "Asia/Colombo", name: "Colombo (Sri Lanka)" },
+  { value: "Asia/Male", name: "Male (Maldives)" },
+
+  // North Africa
+  { value: "Africa/Cairo", name: "Cairo (Egypt)" },
+  { value: "Africa/Casablanca", name: "Casablanca (Morocco)" },
+  { value: "Africa/Algiers", name: "Algiers (Algeria)" },
+  { value: "Africa/Tunis", name: "Tunis (Tunisia)" },
+  { value: "Africa/Tripoli", name: "Tripoli (Libya)" },
+  { value: "Africa/Khartoum", name: "Khartoum (Sudan)" },
+  { value: "Africa/Mogadishu", name: "Mogadishu (Somalia)" },
+
+  // Central Asia & Caucasus
+  { value: "Asia/Tashkent", name: "Tashkent (Uzbekistan)" },
+  { value: "Asia/Dushanbe", name: "Dushanbe (Tajikistan)" },
+  { value: "Asia/Ashgabat", name: "Ashgabat (Turkmenistan)" },
+  { value: "Asia/Bishkek", name: "Bishkek (Kyrgyzstan)" },
+  { value: "Asia/Almaty", name: "Almaty (Kazakhstan)" },
+  { value: "Asia/Baku", name: "Baku (Azerbaijan)" },
+
+  // Europe & Turkey
+  { value: "Europe/Istanbul", name: "Istanbul (Turkey)" },
+  { value: "Europe/Moscow", name: "Moscow (Russia)" },
+  { value: "Europe/Sarajevo", name: "Sarajevo (Bosnia)" },
+  { value: "Europe/Tirana", name: "Tirana (Albania)" },
+  { value: "Europe/Skopje", name: "Skopje (North Macedonia)" },
+  { value: "Europe/Pristina", name: "Pristina (Kosovo)" },
+
+  // Sub-Saharan Africa
+  { value: "Africa/Lagos", name: "Lagos (Nigeria)" },
+  { value: "Africa/Nairobi", name: "Nairobi (Kenya)" },
+  { value: "Africa/Dakar", name: "Dakar (Senegal)" },
+  { value: "Africa/Bamako", name: "Bamako (Mali)" },
+  { value: "Africa/Conakry", name: "Conakry (Guinea)" },
+  { value: "Africa/Addis_Ababa", name: "Addis Ababa (Ethiopia)" },
+  { value: "Africa/Dar_es_Salaam", name: "Dar es Salaam (Tanzania)" },
+  { value: "Africa/Djibouti", name: "Djibouti" },
+  { value: "Indian/Comoro", name: "Moroni (Comoros)" },
+
+  // Major Western Cities
+  { value: "America/New_York", name: "New York (USA)" },
+  { value: "America/Chicago", name: "Chicago (USA)" },
+  { value: "America/Los_Angeles", name: "Los Angeles (USA)" },
+  { value: "America/Toronto", name: "Toronto (Canada)" },
+  { value: "America/Vancouver", name: "Vancouver (Canada)" },
+  { value: "Europe/London", name: "London (UK)" },
+  { value: "Europe/Paris", name: "Paris (France)" },
+  { value: "Europe/Berlin", name: "Berlin (Germany)" },
+  { value: "Europe/Madrid", name: "Madrid (Spain)" },
+  { value: "Europe/Amsterdam", name: "Amsterdam (Netherlands)" },
+  { value: "Europe/Brussels", name: "Brussels (Belgium)" },
+  { value: "Europe/Rome", name: "Rome (Italy)" },
+  { value: "Europe/Stockholm", name: "Stockholm (Sweden)" },
+  { value: "Australia/Sydney", name: "Sydney (Australia)" },
+  { value: "Pacific/Auckland", name: "Auckland (New Zealand)" },
+
+  // Additional Timezones
+  { value: "Asia/Tokyo", name: "Tokyo (Japan)" },
+  { value: "Asia/Seoul", name: "Seoul (South Korea)" },
+  { value: "Asia/Shanghai", name: "Shanghai (China)" },
+  { value: "Asia/Hong_Kong", name: "Hong Kong" },
+  { value: "Asia/Bangkok", name: "Bangkok (Thailand)" },
+  { value: "America/Mexico_City", name: "Mexico City (Mexico)" },
+  { value: "America/Sao_Paulo", name: "São Paulo (Brazil)" },
+  { value: "America/Argentina/Buenos_Aires", name: "Buenos Aires (Argentina)" },
+  { value: "Africa/Johannesburg", name: "Johannesburg (South Africa)" },
+]

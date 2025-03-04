@@ -2,6 +2,8 @@ import { clsx, type ClassValue } from "clsx"
 import { format } from "date-fns"
 import { twMerge } from "tailwind-merge"
 
+import type { PrayerTimes, PrayerTimesDto } from "@/types"
+
 import { prayerCalculationMethods } from "@/config/consts"
 
 export function cn(...inputs: ClassValue[]) {
@@ -9,17 +11,23 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 export function formatTime(seconds: number): string {
-  if (seconds <= 0) return "00:00:00"
+  // Handle zero or negative seconds properly
+  if (seconds <= 0) {
+    return "00:00:00";
+  }
 
-  const hours = Math.floor(seconds / 3600)
-  const mins = Math.floor((seconds % 3600) / 60)
-  const secs = Math.floor(seconds % 60)
+  // Ensure seconds is a positive integer
+  seconds = Math.max(0, Math.floor(seconds));
+
+  const hours = Math.floor(seconds / 3600);
+  const mins = Math.floor((seconds % 3600) / 60);
+  const secs = Math.floor(seconds % 60);
 
   return [
     hours.toString().padStart(2, "0"),
     mins.toString().padStart(2, "0"),
     secs.toString().padStart(2, "0"),
-  ].join(":")
+  ].join(":");
 }
 
 export function formatDate(date: Date): string {
@@ -81,4 +89,70 @@ export const getDefaultCalculationMethod = (timezone: string): number => {
   }
 
   return defaultMethodId
+}
+
+export function formatToPrayerTimes(
+  formatted: PrayerTimesDto | null
+): PrayerTimes | null {
+  if (!formatted) return null
+
+  const parseTime = (timeStr: string): Date | null => {
+    if (!timeStr) return null
+
+    const [time, period] = timeStr.split(" ")
+    const [hoursStr, minutesStr] = time.split(":")
+
+    let hours = parseInt(hoursStr, 10)
+    const minutes = parseInt(minutesStr, 10)
+
+    // Convert to 24-hour format
+    if (period && period.toLowerCase() === "pm" && hours < 12) {
+      hours += 12
+    } else if (period && period.toLowerCase() === "am" && hours === 12) {
+      hours = 0
+    }
+
+    const date = new Date()
+    date.setHours(hours, minutes, 0, 0)
+    return date
+  }
+
+  return {
+    fajr: parseTime(formatted.fajr),
+    sunrise: parseTime(formatted.sunrise),
+    dhuhr: parseTime(formatted.dhuhr),
+    asr: parseTime(formatted.asr),
+    maghrib: parseTime(formatted.maghrib),
+    isha: parseTime(formatted.isha),
+    midnight: parseTime(formatted.midnight),
+    imsak: null, // Not available in FormattedPrayerTimes
+  }
+}
+
+// Convert Date-based prayer times to string format for components
+export function formatToStringPrayerTimes(prayerTimes: PrayerTimes | null): { 
+  fajr: string
+  sunrise: string
+  dhuhr: string
+  asr: string
+  maghrib: string
+  isha: string
+  midnight: string
+} | null {
+  if (!prayerTimes) return null
+  
+  const formatTimeString = (time: Date | null): string => {
+    if (!time) return "N/A"
+    return time.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })
+  }
+  
+  return {
+    fajr: formatTimeString(prayerTimes.fajr),
+    sunrise: formatTimeString(prayerTimes.sunrise),
+    dhuhr: formatTimeString(prayerTimes.dhuhr),
+    asr: formatTimeString(prayerTimes.asr),
+    maghrib: formatTimeString(prayerTimes.maghrib),
+    isha: formatTimeString(prayerTimes.isha),
+    midnight: formatTimeString(prayerTimes.midnight),
+  }
 }

@@ -49,14 +49,14 @@ export type SiteConfig = {
   keywords: string[]
 }
 
-export interface PrayerTimes {
-  fajr: Date | null
-  sunrise: Date | null
-  dhuhr: Date | null
-  asr: Date | null
-  maghrib: Date | null
-  isha: Date | null
-  midnight: Date | null
+export interface PrayerTimesDto {
+  fajr: string
+  sunrise: string
+  dhuhr: string
+  asr: string
+  maghrib: string
+  isha: string
+  midnight: string
 }
 
 export interface PrayerTimes {

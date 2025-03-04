@@ -20,20 +20,16 @@ export function RamadanCalendar({
   selectedDate,
   onDateSelect,
 }: RamadanCalendarProps) {
-  // For a real app, you would calculate the actual Ramadan dates
-  // This is a simplified example using the current month
   const today = new Date()
   const [currentMonth, setCurrentMonth] = useState(today.getMonth())
   const [currentYear, setCurrentYear] = useState(today.getFullYear())
 
-  const { latitude, longitude, loading: locationLoading } = useGeolocation()
+  const { loading: locationLoading } = useGeolocation()
 
-  const { prayerTimes, isLoading: prayerTimesLoading } = usePrayerTimes({
-    latitude: latitude || 0,
-    longitude: longitude || 0,
-    date: selectedDate,
-    enabled: Boolean(latitude && longitude),
-  })
+  const { 
+    prayerTimes, 
+    isLoading: prayerTimesLoading 
+  } = usePrayerTimes()
 
   const isLoading = locationLoading || prayerTimesLoading
 
@@ -155,19 +151,13 @@ export function RamadanCalendar({
               <div>
                 <p className="text-muted-foreground">Suhur ends:</p>
                 <p className="font-medium">
-                  {prayerTimes.fajr?.toLocaleTimeString([], {
-                    hour: "2-digit",
-                    minute: "2-digit",
-                  }) || "N/A"}
+                  {prayerTimes.fajr || "N/A"}
                 </p>
               </div>
               <div>
                 <p className="text-muted-foreground">Iftar:</p>
                 <p className="font-medium">
-                  {prayerTimes.maghrib?.toLocaleTimeString([], {
-                    hour: "2-digit",
-                    minute: "2-digit",
-                  }) || "N/A"}
+                  {prayerTimes.maghrib || "N/A"}
                 </p>
               </div>
             </div>

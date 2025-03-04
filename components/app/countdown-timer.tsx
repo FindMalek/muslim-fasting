@@ -1,9 +1,7 @@
 "use client"
 
-import { useEffect, useState } from "react"
+import { useEffect, useState, useRef } from "react"
 import { Sunrise, Sunset } from "lucide-react"
-
-import type { PrayerTimes } from "@/types"
 
 import { formatTime } from "@/lib/utils"
 
@@ -12,22 +10,33 @@ import { Card, CardContent } from "@/components/ui/card"
 import { Progress } from "@/components/ui/progress"
 
 interface CountdownTimerProps {
-  prayerTimes: PrayerTimes | null
+  prayerTimes: { 
+    fajr: string
+    sunrise: string
+    dhuhr: string
+    asr: string
+    maghrib: string
+    isha: string
+    midnight: string
+  } | null
   isLoading: boolean
-  date?: Date
-  timezone?: string // Made optional to be backward compatible
 }
 
 export function CountdownTimer({
   prayerTimes,
   isLoading,
-  date,
 }: CountdownTimerProps) {
   const [timeRemaining, setTimeRemaining] = useState<number>(0)
   const [targetTime, setTargetTime] = useState<Date | null>(null)
   const [targetName, setTargetName] = useState<string>("")
   const [progress, setProgress] = useState<number>(0)
   const [icon, setIcon] = useState<"sunrise" | "sunset">("sunset")
+  
+  // Use refs to track current state values without triggering re-renders
+  const targetTimeRef = useRef<Date | null>(null);
+  const targetNameRef = useRef<string>("");
+  const iconRef = useRef<"sunrise" | "sunset">("sunset");
+  const progressRef = useRef<number>(0);
 
   useEffect(() => {
     if (!prayerTimes) return
@@ -35,96 +44,141 @@ export function CountdownTimer({
     const calculateNextPrayer = () => {
       const now = new Date()
 
+      // Convert string times to Date objects for comparison
+      const convertTimeToDate = (timeStr: string | null): Date | null => {
+        if (!timeStr) return null;
+        
+        const [time, period] = timeStr.split(" ");
+        const [hourStr, minuteStr] = time.split(":");
+        
+        let hour = parseInt(hourStr, 10);
+        const minute = parseInt(minuteStr, 10);
+        
+        // Convert from 12-hour to 24-hour format
+        if (period && period.toLowerCase() === "pm" && hour < 12) {
+          hour += 12;
+        } else if (period && period.toLowerCase() === "am" && hour === 12) {
+          hour = 0;
+        }
+        
+        const dateObj = new Date();
+        dateObj.setHours(hour, minute, 0, 0);
+        return dateObj;
+      };
+
+      const fajrTime = convertTimeToDate(prayerTimes.fajr);
+      const maghribTime = convertTimeToDate(prayerTimes.maghrib);
+
+      if (!fajrTime || !maghribTime) return;
+    
+      // Store the current values to check if we need to update
+      let newTargetTime: Date | null = null;
+      let newTargetName: string = "";
+      let newIcon: "sunrise" | "sunset" = "sunset";
+      let newProgress: number = 0;
+
       // Check if we're in Ramadan fasting hours (between Fajr and Maghrib)
-      if (
-        prayerTimes.fajr &&
-        prayerTimes.maghrib &&
-        now >= prayerTimes.fajr &&
-        now < prayerTimes.maghrib
-      ) {
+      if (now >= fajrTime && now < maghribTime) {
         // Counting down to Iftar (Maghrib)
-        setTargetTime(prayerTimes.maghrib)
-        setTargetName("Iftar")
-        setIcon("sunset")
+        newTargetTime = maghribTime;
+        newTargetName = "Iftar";
+        newIcon = "sunset";
 
         // Calculate total fasting duration and progress
-        const fastingDuration =
-          prayerTimes.maghrib.getTime() - prayerTimes.fajr.getTime()
-        const elapsed = now.getTime() - prayerTimes.fajr.getTime()
-        const progressPercent = Math.min(100, (elapsed / fastingDuration) * 100)
-        setProgress(progressPercent)
+        const fastingDuration = maghribTime.getTime() - fajrTime.getTime();
+        const elapsed = now.getTime() - fajrTime.getTime();
+        newProgress = Math.min(100, (elapsed / fastingDuration) * 100);
       } else {
         // We're after Maghrib or before Fajr, counting down to Suhur end (Fajr)
         // Get tomorrow's Fajr if needed
-        let nextFajr = prayerTimes.fajr
+        let nextFajr = fajrTime;
 
         if (!nextFajr || now >= nextFajr) {
           // We need tomorrow's Fajr time
-          const tomorrow = new Date(now)
-          tomorrow.setDate(tomorrow.getDate() + 1)
-          // This is a placeholder - in a real app, you'd calculate tomorrow's prayer times
+          const tomorrow = new Date(now);
+          tomorrow.setDate(tomorrow.getDate() + 1);
           // For this demo, we'll just add 24 hours to today's Fajr
-          if (prayerTimes.fajr) {
-            nextFajr = new Date(prayerTimes.fajr)
-            nextFajr.setDate(nextFajr.getDate() + 1)
+          if (fajrTime) {
+            nextFajr = new Date(fajrTime);
+            nextFajr.setDate(nextFajr.getDate() + 1);
           }
         }
 
         if (nextFajr) {
-          setTargetTime(nextFajr)
-          setTargetName("Suhur Ends")
-          setIcon("sunrise")
+          newTargetTime = nextFajr;
+          newTargetName = "Suhur Ends";
+          newIcon = "sunrise";
 
           // Calculate progress for night hours
-          let nightDuration = 0
-          if (prayerTimes.maghrib) {
-            if (now >= prayerTimes.maghrib) {
+          let nightDuration = 0;
+          if (maghribTime) {
+            if (now >= maghribTime) {
               // From Maghrib to next Fajr
-              nightDuration = nextFajr.getTime() - prayerTimes.maghrib.getTime()
-              const elapsed = now.getTime() - prayerTimes.maghrib.getTime()
-              const progressPercent = Math.min(
-                100,
-                (elapsed / nightDuration) * 100
-              )
-              setProgress(progressPercent)
+              nightDuration = nextFajr.getTime() - maghribTime.getTime();
+              const elapsed = now.getTime() - maghribTime.getTime();
+              newProgress = Math.min(100, (elapsed / nightDuration) * 100);
             } else {
               // From midnight to Fajr
-              const midnight = new Date(now)
-              midnight.setHours(0, 0, 0, 0)
-              nightDuration = nextFajr.getTime() - midnight.getTime()
-              const elapsed = now.getTime() - midnight.getTime()
-              const progressPercent = Math.min(
-                100,
-                (elapsed / nightDuration) * 100
-              )
-              setProgress(progressPercent)
+              const midnight = new Date(now);
+              midnight.setHours(0, 0, 0, 0);
+              nightDuration = nextFajr.getTime() - midnight.getTime();
+              
+              // Calculate elapsed time, ensuring it's not zero at exactly midnight
+              const elapsed = Math.max(1000, now.getTime() - midnight.getTime());
+              
+              // Handle the case where elapsed time is 0 (exactly midnight)
+              newProgress = Math.min(100, (elapsed / nightDuration) * 100);
             }
           }
         }
       }
-    }
 
-    calculateNextPrayer()
+      // Update state and refs
+      if (newTargetTime) {
+        targetTimeRef.current = newTargetTime;
+        setTargetTime(newTargetTime);
+        
+        // Calculate time remaining right away
+        const diff = newTargetTime.getTime() - now.getTime();
+        if (diff > 0) {
+          setTimeRemaining(Math.floor(diff / 1000));
+        }
+      }
+      
+      if (newTargetName) {
+        targetNameRef.current = newTargetName;
+        setTargetName(newTargetName);
+      }
+      
+      iconRef.current = newIcon;
+      setIcon(newIcon);
+      
+      progressRef.current = newProgress;
+      setProgress(newProgress);
+    };
+
+    calculateNextPrayer();
 
     const interval = setInterval(() => {
-      const now = new Date()
+      const now = new Date();
 
-      if (targetTime) {
-        const diff = targetTime.getTime() - now.getTime()
+      if (targetTimeRef.current) {
+        const diff = targetTimeRef.current.getTime() - now.getTime();
 
         if (diff <= 0) {
           // Time's up, recalculate next target
-          calculateNextPrayer()
+          calculateNextPrayer();
         } else {
-          setTimeRemaining(Math.floor(diff / 1000))
+          // Update time remaining without causing re-renders in the useEffect
+          setTimeRemaining(Math.floor(diff / 1000));
         }
       } else {
-        calculateNextPrayer()
+        calculateNextPrayer();
       }
-    }, 1000)
+    }, 1000);
 
-    return () => clearInterval(interval)
-  }, [prayerTimes, targetTime])
+    return () => clearInterval(interval);
+  }, [prayerTimes]); // Only depend on prayerTimes
 
   if (isLoading) {
     return <CountdownSkeleton />

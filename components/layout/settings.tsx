@@ -1,10 +1,8 @@
 "use client"
 
-import { useEffect, useState } from "react"
+import { useState } from "react"
+import { useRouter, useSearchParams } from "next/navigation"
 import { useTheme } from "next-themes"
-
-import { prayerCalculationMethods } from "@/config/consts"
-import { getDefaultCalculationMethod } from "@/lib/utils"
 
 import { Icons } from "@/components/shared/icons"
 import { Button } from "@/components/ui/button"
@@ -21,23 +19,42 @@ import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
 import { Switch } from "@/components/ui/switch"
 
 export function Settings() {
+  const router = useRouter()
   const { theme, setTheme } = useTheme()
-  const [timezone, setTimezone] = useState(() => {
-    return Intl.DateTimeFormat().resolvedOptions().timeZone || "UTC"
-  })
+  const searchParams = useSearchParams()
 
-  const [calculationMethod, setCalculationMethod] = useState(() => {
-    return getDefaultCalculationMethod(
-      Intl.DateTimeFormat().resolvedOptions().timeZone || "UTC"
+  const [timezone, setTimezone] = useState(() => {
+    return (
+      searchParams.get("timezone") ||
+      Intl.DateTimeFormat().resolvedOptions().timeZone ||
+      "UTC"
     )
   })
 
-  const [notifications, setNotifications] = useState(false)
-  const [use24HourFormat, setUse24HourFormat] = useState(false)
+  const [use24HourFormat, setUse24HourFormat] = useState(() => {
+    return searchParams.get("format") === "24h"
+  })
 
-  useEffect(() => {
-    setCalculationMethod(getDefaultCalculationMethod(timezone))
-  }, [timezone])
+  const [notifications, setNotifications] = useState(false)
+
+  // Update URL when settings change
+  const updateSearchParams = (key: string, value: string) => {
+    const params = new URLSearchParams(searchParams.toString())
+    params.set(key, value)
+    router.push(`?${params.toString()}`, { scroll: false })
+  }
+
+  // Handle timezone change
+  const handleTimezoneChange = (value: string) => {
+    setTimezone(value)
+    updateSearchParams("timezone", value)
+  }
+
+  // Handle time format change
+  const handleFormatChange = (value: boolean) => {
+    setUse24HourFormat(value)
+    updateSearchParams("format", value ? "24h" : "12h")
+  }
 
   return (
     <Sheet>
@@ -70,43 +87,14 @@ export function Settings() {
           {/* Timezone Setting */}
           <div className="space-y-3">
             <h3 className="text-sm font-medium">Timezone</h3>
-            <Select
-              value={timezone}
-              onValueChange={(value: string) => setTimezone(value)}
-            >
+            <Select value={timezone} onValueChange={handleTimezoneChange}>
               <SelectTrigger className="w-full">
                 <SelectValue placeholder="Select your timezone" />
               </SelectTrigger>
               <SelectContent className="max-h-[200px]">
-                {prayerCalculationMethods.map((method) => (
-                  <SelectItem key={method.timezone} value={method.timezone}>
-                    {method.timezone}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </div>
-
-          <Separator />
-
-          <div className="space-y-3">
-            <h3 className="text-sm font-medium">Prayer Calculation Method</h3>
-            <Select
-              value={calculationMethod.toString()}
-              onValueChange={(value: string) =>
-                setCalculationMethod(parseInt(value))
-              }
-            >
-              <SelectTrigger className="w-full">
-                <SelectValue placeholder="Select calculation method" />
-              </SelectTrigger>
-              <SelectContent className="max-h-[200px]">
-                {prayerCalculationMethods.map((method) => (
-                  <SelectItem
-                    key={method.value}
-                    value={method.value.toString()}
-                  >
-                    {method.name}
+                {Intl.supportedValuesOf("timeZone").map((tz) => (
+                  <SelectItem key={tz} value={tz}>
+                    {tz}
                   </SelectItem>
                 ))}
               </SelectContent>
@@ -119,13 +107,13 @@ export function Settings() {
             <div className="space-y-0.5">
               <Label htmlFor="24h-format">24-Hour Format</Label>
               <p className="text-sm text-muted-foreground">
-                Display time in 24-hour format (coming soon)
+                Display time in 24-hour format
               </p>
             </div>
             <Switch
               id="24h-format"
               checked={use24HourFormat}
-              onCheckedChange={setUse24HourFormat}
+              onCheckedChange={handleFormatChange}
             />
           </div>
 
@@ -133,9 +121,14 @@ export function Settings() {
 
           <div className="flex items-center justify-between">
             <div className="space-y-0.5">
-              <Label htmlFor="notifications">Prayer Notifications</Label>
+              <Label htmlFor="notifications">
+                Prayer Notifications
+                <span className="text-xs text-muted-foreground">
+                  (coming soon)
+                </span>
+              </Label>
               <p className="text-sm text-muted-foreground">
-                Receive notifications for prayer times (coming soon)
+                Receive notifications for prayer times
               </p>
             </div>
             <Switch

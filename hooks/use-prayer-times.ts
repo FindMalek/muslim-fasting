@@ -1,78 +1,189 @@
-import { useState } from "react"
-import { fetchPrayerTimes } from "@/app/actions/prayerTimes"
-import { useQuery } from "@tanstack/react-query"
-import { formatISO } from "date-fns"
+"use client"
 
-import type { PrayerTimes, PrayerTimesResponse } from "@/types"
+import { useEffect, useState } from "react"
+import { format } from "date-fns"
 
-import { useGeolocation } from "./use-geolocation"
+import type { PrayerTimingsData } from "@/types"
 
-type UsePrayerTimesParams = {
-  latitude: number
-  longitude: number
-  date?: Date
-  enabled?: boolean
+import { useGeolocation } from "@/hooks/use-geolocation"
+import { usePrayerMethod } from "@/hooks/use-prayer-method"
+
+import { fetchPrayerTimes } from "@/actions/prayer-times"
+
+// Define interface for formatted prayer times
+interface FormattedPrayerTimes {
+  fajr: string
+  sunrise: string
+  dhuhr: string
+  asr: string
+  maghrib: string
+  isha: string
+  midnight: string
 }
 
-export function usePrayerTimes(timezone: string) {
-  const [date, setDate] = useState(new Date())
-  const { latitude, longitude, loading } = useGeolocation()
+const defaultCity = "Monastir"
+const defaultCountry = "TN"
 
-  const dateString = formatISO(date, { representation: "date" })
+export function usePrayerTimes() {
+  const {
+    prayerCalculationMethod,
+    error: methodError,
+    loading: methodLoading,
+    updatePrayerCalculationMethod,
+  } = usePrayerMethod()
 
-  const query = useQuery<PrayerTimesResponse>({
-    queryKey: ["prayerTimes", latitude, longitude, dateString, timezone],
-    queryFn: async () => {
-      if (!latitude || !longitude) throw new Error("Location not available")
-      const result = await fetchPrayerTimes(latitude, longitude, dateString)
-      if ("message" in result && !("prayerTimes" in result)) {
-        throw result
+  const {
+    city,
+    country,
+    error: geoError,
+    loading: geoLoading,
+    updateLocation,
+  } = useGeolocation()
+
+  const [prayerTimes, setPrayerTimes] = useState<FormattedPrayerTimes | null>(
+    null
+  )
+  const [currentPrayer, setCurrentPrayer] = useState<string | null>(null)
+  const [nextPrayer, setNextPrayer] = useState<string | null>(null)
+  const [timeUntilNextPrayer, setTimeUntilNextPrayer] = useState<string | null>(
+    null
+  )
+  const [isLoading, setIsLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
+
+  useEffect(() => {
+    const fetchPrayerTimesData = async (method: number) => {
+      setIsLoading(true)
+      try {
+        // Use city and country from geolocation hook
+        // Default to Mecca, Saudi Arabia if not available
+        const locationCity = city || defaultCity
+        const locationCountry = country || defaultCountry
+
+        const response = await fetchPrayerTimes(
+          method,
+          locationCity,
+          locationCountry
+        )
+
+        if ("message" in response) {
+          setError(response.message)
+          setPrayerTimes(null)
+        } else {
+          // Format the prayer times
+          const formattedTimes: FormattedPrayerTimes = {
+            fajr: formatTimeString(response.prayerTimes.timings.Fajr),
+            sunrise: formatTimeString(response.prayerTimes.timings.Sunrise),
+            dhuhr: formatTimeString(response.prayerTimes.timings.Dhuhr),
+            asr: formatTimeString(response.prayerTimes.timings.Asr),
+            maghrib: formatTimeString(response.prayerTimes.timings.Maghrib),
+            isha: formatTimeString(response.prayerTimes.timings.Isha),
+            midnight: formatTimeString(response.prayerTimes.timings.Midnight),
+          }
+
+          setPrayerTimes(formattedTimes)
+          calculateCurrentAndNextPrayer(response.prayerTimes.timings)
+          setError(null)
+        }
+      } catch (err) {
+        setError(
+          err instanceof Error ? err.message : "Failed to fetch prayer times"
+        )
+        setPrayerTimes(null)
+      } finally {
+        setIsLoading(false)
       }
-      return result as PrayerTimesResponse
-    },
-    enabled: Boolean(latitude && longitude && !loading),
-    staleTime: 1000 * 60 * 30, // 30 minutes
-    gcTime: 1000 * 60 * 60, // 1 hour
-  })
+    }
 
-  // Transform API response to the PrayerTimes format used in our components
-  const transformedPrayerTimes: PrayerTimes | null = query.data
-    ? {
-        fajr: parseTimeString(query.data.prayerTimes.timings.Fajr, date),
-        sunrise: parseTimeString(query.data.prayerTimes.timings.Sunrise, date),
-        dhuhr: parseTimeString(query.data.prayerTimes.timings.Dhuhr, date),
-        asr: parseTimeString(query.data.prayerTimes.timings.Asr, date),
-        maghrib: parseTimeString(query.data.prayerTimes.timings.Maghrib, date),
-        isha: parseTimeString(query.data.prayerTimes.timings.Isha, date),
-        midnight: parseTimeString(
-          query.data.prayerTimes.timings.Midnight,
-          date
-        ),
-        imsak: parseTimeString(query.data.prayerTimes.timings.Imsak, date),
+    if (prayerCalculationMethod !== null) {
+      fetchPrayerTimesData(prayerCalculationMethod)
+    }
+  }, [prayerCalculationMethod, city, country])
+
+  // Helper function to format time strings from API (HH:MM format)
+  const formatTimeString = (timeString: string): string => {
+    const [hours, minutes] = timeString.split(":")
+    const date = new Date()
+    date.setHours(parseInt(hours, 10), parseInt(minutes, 10), 0, 0)
+    return format(date, "h:mm a")
+  }
+
+  // Calculate current and next prayer times
+  const calculateCurrentAndNextPrayer = (timings: PrayerTimingsData) => {
+    const prayers = [
+      { name: "Fajr", time: timings.Fajr },
+      { name: "Sunrise", time: timings.Sunrise },
+      { name: "Dhuhr", time: timings.Dhuhr },
+      { name: "Asr", time: timings.Asr },
+      { name: "Maghrib", time: timings.Maghrib },
+      { name: "Isha", time: timings.Isha },
+    ]
+
+    const now = new Date()
+    const today = format(now, "yyyy-MM-dd")
+
+    // Convert prayer times to Date objects for comparison
+    const prayerDates = prayers.map((prayer) => {
+      const [hours, minutes] = prayer.time.split(":")
+      const date = new Date(today)
+      date.setHours(parseInt(hours, 10), parseInt(minutes, 10), 0, 0)
+      return { name: prayer.name, date }
+    })
+
+    // Find current and next prayer
+    let currentPrayerName = "Isha" // Default to Isha if none found
+    let nextPrayerName = "Fajr" // Default to Fajr if none found
+    let nextPrayerDate = new Date(today)
+    nextPrayerDate.setDate(nextPrayerDate.getDate() + 1) // Tomorrow's Fajr
+
+    for (let i = 0; i < prayerDates.length; i++) {
+      if (now < prayerDates[i].date) {
+        // Found the next prayer
+        nextPrayerName = prayerDates[i].name
+        nextPrayerDate = prayerDates[i].date
+
+        // Current prayer is the previous one
+        currentPrayerName = i === 0 ? "Isha" : prayerDates[i - 1].name
+        break
       }
-    : null
+    }
+
+    setCurrentPrayer(currentPrayerName)
+    setNextPrayer(nextPrayerName)
+
+    // Calculate time until next prayer
+    const diffMs = nextPrayerDate.getTime() - now.getTime()
+    const diffHrs = Math.floor(diffMs / (1000 * 60 * 60))
+    const diffMins = Math.floor((diffMs % (1000 * 60 * 60)) / (1000 * 60))
+    setTimeUntilNextPrayer(`${diffHrs}h ${diffMins}m`)
+  }
+
+  // Function to manually update prayer calculation method
+  const updateMethod = (newMethod: number) => {
+    updatePrayerCalculationMethod(newMethod)
+  }
+
+  // Functions to update city and country
+  const updateCity = (newCity: string) => {
+    updateLocation(newCity, country || defaultCountry)
+  }
+
+  const updateCountry = (newCountry: string) => {
+    updateLocation(city || defaultCity, newCountry)
+  }
 
   return {
-    ...query,
-    prayerTimes: transformedPrayerTimes,
-    hijriDate: query.data?.prayerTimes.date.hijri || null,
-    gregorianDate: query.data?.prayerTimes.date.gregorian || null,
-    meta: query.data?.prayerTimes.meta || null,
-    date,
-    setDate,
-    isLoading: query.isLoading || loading,
+    prayerTimes,
+    currentPrayer,
+    nextPrayer,
+    timeUntilNextPrayer,
+    isLoading: isLoading || methodLoading || geoLoading,
+    error: error || methodError || geoError,
+    prayerCalculationMethod,
+    updatePrayerCalculationMethod: updateMethod,
+    city: city || defaultCity,
+    country: country || defaultCountry,
+    updateCity,
+    updateCountry,
   }
-}
-
-// Helper function to parse time strings from the API (format: "HH:MM")
-function parseTimeString(timeString: string, baseDate?: Date): Date | null {
-  if (!timeString) return null
-
-  const [hours, minutes] = timeString.split(":").map(Number)
-  if (isNaN(hours) || isNaN(minutes)) return null
-
-  const date = baseDate ? new Date(baseDate) : new Date()
-  date.setHours(hours, minutes, 0, 0)
-
-  return date
 }

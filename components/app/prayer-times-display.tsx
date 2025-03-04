@@ -2,15 +2,19 @@
 
 import { Sunrise, Sunset } from "lucide-react"
 
-import type { PrayerTimes } from "@/types"
-
-import { formatDate } from "@/lib/utils"
-
 import { PrayerTimesSkeleton } from "@/components/app/prayer-times-skeleton"
 import { Card, CardContent } from "@/components/ui/card"
 
 interface PrayerTimesDisplayProps {
-  prayerTimes: PrayerTimes | null
+  prayerTimes: { 
+    fajr: string
+    sunrise: string
+    dhuhr: string
+    asr: string
+    maghrib: string
+    isha: string
+    midnight: string
+  } | null
   date: Date
 }
 
@@ -22,14 +26,21 @@ export function PrayerTimesDisplay({
     return <PrayerTimesSkeleton />
   }
 
-  const formatPrayerTime = (time: Date | null) => {
+  const formatPrayerTime = (time: string | null) => {
     if (!time) return "N/A"
-    return time.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })
+    return time
   }
 
   return (
     <div className="space-y-4">
-      <h2 className="text-center text-xl font-semibold">{formatDate(date)}</h2>
+      <h2 className="text-center text-xl font-semibold">
+        {date.toLocaleDateString("en-US", {
+          weekday: "long",
+          month: "long",
+          day: "numeric",
+          year: "numeric",
+        })}
+      </h2>
 
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
         <Card className="bg-primary/5">

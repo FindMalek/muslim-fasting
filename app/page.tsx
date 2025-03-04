@@ -1,5 +1,8 @@
 "use client"
 
+import { useState } from "react"
+
+import { formatToPrayerTimes, formatToStringPrayerTimes } from "@/lib/utils"
 import { usePrayerTimes } from "@/hooks/use-prayer-times"
 import { useTimezone } from "@/hooks/use-timezone"
 
@@ -14,8 +17,13 @@ import { Skeleton } from "@/components/ui/skeleton"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 
 export default function Home() {
-  const { timezone, setTimezone } = useTimezone()
-  const { prayerTimes, date, setDate, isLoading } = usePrayerTimes(timezone)
+  const { timezoneName } = useTimezone()
+  const { prayerTimes, isLoading } = usePrayerTimes()
+
+  const [date, setDate] = useState(new Date())
+
+  const convertedPrayerTimes = formatToPrayerTimes(prayerTimes)
+  const stringPrayerTimes = formatToStringPrayerTimes(convertedPrayerTimes)
 
   return (
     <div className="container mx-auto px-4 py-8">
@@ -26,7 +34,7 @@ export default function Home() {
         </p>
         <div className="mt-2 flex items-center justify-center text-sm text-muted-foreground">
           <Icons.location className="mr-1 size-4" />
-          <span>{timezone}</span>
+          <span>{timezoneName}</span>
         </div>
       </div>
 
@@ -45,15 +53,17 @@ export default function Home() {
                 </TabsTrigger>
               </TabsList>
               <TabsContent value="times" className="mt-6">
-                <PrayerTimesDisplay prayerTimes={prayerTimes} date={date} />
+                <PrayerTimesDisplay
+                  prayerTimes={stringPrayerTimes}
+                  date={date}
+                />
                 <div className="mt-8">
                   {isLoading ? (
                     <CountdownSkeleton />
                   ) : (
                     <CountdownTimer
-                      prayerTimes={prayerTimes}
+                      prayerTimes={stringPrayerTimes}
                       isLoading={isLoading}
-                      date={date}
                     />
                   )}
                 </div>

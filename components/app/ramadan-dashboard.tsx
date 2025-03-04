@@ -15,34 +15,21 @@ export function RamadanDashboard() {
   const today = new Date()
   const [selectedDate, setSelectedDate] = useState<Date>(today)
 
-  // Get the user's timezone
-  const userTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone
-
   const {
     prayerTimes,
     isLoading: prayerTimesLoading,
-    isError,
-    hijriDate,
-    date,
-    setDate,
-  } = usePrayerTimes(userTimezone)
+  } = usePrayerTimes()
 
-  // Update the hook's internal date when calendar selection changes
   const handleDateSelect = (date: Date) => {
-    setDate(date)
+    setSelectedDate(date)
   }
 
-  const { latitude, longitude, loading: locationLoading } = useGeolocation()
+  const { loading: locationLoading } = useGeolocation()
 
   return (
     <div className="mx-auto max-w-7xl p-4">
       <div className="mb-8">
         <h1 className="mb-2 text-3xl font-bold">Ramadan Dashboard</h1>
-        {hijriDate && (
-          <p className="text-muted-foreground">
-            {hijriDate.day} {hijriDate.month.en} {hijriDate.year} Hijri
-          </p>
-        )}
       </div>
 
       <div className="grid gap-6 lg:grid-cols-12">
@@ -50,7 +37,6 @@ export function RamadanDashboard() {
           <CountdownTimer
             prayerTimes={prayerTimes}
             isLoading={locationLoading || prayerTimesLoading}
-            date={selectedDate}
           />
 
           <PrayerTimesDisplay prayerTimes={prayerTimes} date={selectedDate} />
