@@ -72,14 +72,13 @@ import {
   X,
   ZapIcon,
 } from "lucide-react"
-import { FaDiscord, FaGithub, FaGoogle } from "react-icons/fa"
-import { FaXTwitter } from "react-icons/fa6"
+
 import {
   MdOutlineDescription,
   MdOutlineIntegrationInstructions,
   MdOutlineMemory,
 } from "react-icons/md"
-import { SiPrisma } from "react-icons/si"
+import {SiDiscord, SiGithub, SiGoogle, SiPrisma, SiX} from "@icons-pack/react-simple-icons";
 
 export type Icon = LucideIcon
 
@@ -134,7 +133,7 @@ export const Icons = {
   moon: Moon,
   laptop: Laptop,
   search: Search,
-  twitter: FaXTwitter,
+  twitter: SiX,
   check: Check,
   orderbook: BookOpenText,
   chevronsUpDown: ChevronsUpDown,
@@ -144,8 +143,8 @@ export const Icons = {
   student: PencilIcon,
   teacher: UserCogIcon,
   monitor: Monitor,
-  discord: FaDiscord,
-  github: FaGithub,
+  discord: SiDiscord,
+  github: SiGithub,
   memory: MdOutlineMemory,
   integrationInstructions: MdOutlineIntegrationInstructions,
   description: MdOutlineDescription,
@@ -199,7 +198,7 @@ export const Icons = {
   joined: UserPlus,
   save: SaveIcon,
   question: HelpCircle,
-  google: FaGoogle,
+  google: SiGoogle,
   clinic: HospitalIcon,
   edit: PencilIcon,
   userPlus: UserPlus,
