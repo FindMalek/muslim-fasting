@@ -22,10 +22,10 @@ export function LayoutWrapper({ children }: { children: React.ReactNode }) {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <ThemeProvider attribute="class" defaultTheme="light">
+      <ThemeProvider attribute="class" defaultTheme="system">
         <TooltipProvider delayDuration={0}>{children}</TooltipProvider>
       </ThemeProvider>
-      {process.env.NODE_ENV === "development" && <ReactQueryDevtools />}
+      <ReactQueryDevtools />
     </QueryClientProvider>
   )
 }
