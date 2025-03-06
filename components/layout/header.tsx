@@ -12,7 +12,7 @@ export function Header() {
         <div className="flex items-center">
           <Link href="/" className="flex items-center text-xl font-bold">
             <Icons.moonStar className="mr-2 size-5 text-primary" />
-            Muslim Fasting Friend
+            <span>Muslim Fasting Friend</span>
           </Link>
         </div>
         <div className="flex items-center gap-3">
