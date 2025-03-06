@@ -13,7 +13,7 @@ import {
 } from "@/components/ui/dropdown-menu"
 
 export function ModeToggle() {
-  const { setTheme } = useTheme()
+  const { setTheme, theme } = useTheme()
 
   return (
     <DropdownMenu>
@@ -25,13 +25,28 @@ export function ModeToggle() {
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
-        <DropdownMenuItem onClick={() => setTheme("light")}>
+        <DropdownMenuItem
+          className={theme === "light" ? "bg-primary" : ""}
+          onClick={() => setTheme("light")}
+        >
+          <span className="sr-only">Toggle light theme</span>
+          <Icons.sun className="mr-2 size-4" />
           Light
         </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => setTheme("dark")}>
+        <DropdownMenuItem
+          className={theme === "dark" ? "bg-primary" : ""}
+          onClick={() => setTheme("dark")}
+        >
+          <span className="sr-only">Toggle dark theme</span>
+          <Icons.moon className="mr-2 size-4" />
           Dark
         </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => setTheme("system")}>
+        <DropdownMenuItem
+          className={theme === "system" ? "bg-primary" : ""}
+          onClick={() => setTheme("system")}
+        >
+          <span className="sr-only">Toggle system theme</span>
+          <Icons.sunMoon className="mr-2 size-4" />
           System
         </DropdownMenuItem>
       </DropdownMenuContent>

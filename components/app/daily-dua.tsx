@@ -22,11 +22,22 @@ export function DailyDua({ date }: DailyDuaProps) {
   const dua = ramadanDuas[duaIndex]
 
   const handleCopy = () => {
-    navigator.clipboard.writeText(
-      `${dua.arabic}\n\n${dua.transliteration}\n\n${dua.translation}`
-    )
-    setCopied(true)
-    setTimeout(() => setCopied(false), 2000)
+    if (navigator.clipboard) {
+      navigator.clipboard
+        .writeText(
+          `${dua.arabic}\n\n${dua.transliteration}\n\n${dua.translation}`
+        )
+        .then(() => {
+          setCopied(true)
+          setTimeout(() => setCopied(false), 2000)
+        })
+    } else {
+      alert(
+        "Your browser does not support copying to clipboard. Please copy the text manually." +
+          "\n\n" +
+          "This could be due to your browser's privacy settings."
+      )
+    }
   }
 
   return (

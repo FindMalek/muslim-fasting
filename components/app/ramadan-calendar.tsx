@@ -80,25 +80,26 @@ export function RamadanCalendar({
 
   // Add empty cells for days before the first day of the month
   for (let i = 0; i < firstDayOfMonth; i++) {
-    calendarDays.push(<div key={`empty-${i}`} className="size-10"></div>)
+    calendarDays.push(<div key={`empty-${i}`}></div>)
   }
 
   // Add cells for each day of the month
   for (let day = 1; day <= daysInMonth; day++) {
     calendarDays.push(
-      <Button
-        key={day}
-        variant="ghost"
-        className={`size-10 p-0 ${isToday(day) ? "bg-primary/10 text-primary" : ""} ${isSelected(day) ? "bg-primary text-primary-foreground hover:bg-primary/70" : ""}`}
-        onClick={() => selectDate(day)}
-      >
-        {day}
-      </Button>
+      <div key={day}>
+        <Button
+          variant="ghost"
+          className={`size-10 p-0 ${isToday(day) ? "bg-primary/10 text-primary" : ""} ${isSelected(day) ? "bg-primary text-primary-foreground hover:bg-primary/70" : ""}`}
+          onClick={() => selectDate(day)}
+        >
+          {day}
+        </Button>
+      </div>
     )
   }
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-6">
       <div className="flex items-center justify-between">
         <h2 className="text-xl font-semibold">
           {monthName} {currentYear}
@@ -113,12 +114,9 @@ export function RamadanCalendar({
         </div>
       </div>
 
-      <div className="grid grid-cols-7 gap-1 text-center">
+      <div className="grid grid-cols-7 gap-3 text-center">
         {daysOfWeek.map((day) => (
-          <div
-            key={day}
-            className="flex h-10 items-center justify-center text-sm font-medium"
-          >
+          <div key={day} className="text-sm font-medium">
             {day}
           </div>
         ))}
