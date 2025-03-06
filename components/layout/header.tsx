@@ -15,7 +15,7 @@ export function Header() {
             Muslim Fasting Friend
           </Link>
         </div>
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-3">
           <ModeToggle />
           <Link href={siteConfig.links.github} target="_blank" rel="noopener noreferrer">
             <Icons.github className="size-5" />
