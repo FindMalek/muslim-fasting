@@ -24,7 +24,7 @@ export function ModeToggle() {
           <span className="sr-only">Toggle theme</span>
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end">
+      <DropdownMenuContent align="end" className={"space-y-1"}>
         <DropdownMenuItem
           className={
             theme === "light" ? "bg-primary text-primary-foreground" : ""
