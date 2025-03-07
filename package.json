@@ -10,6 +10,7 @@
     "dev": "next dev",
     "build": "next build",
     "turbo": "next dev --turbo",
+    "turbos": "next dev --turbo --experimental-https",
     "start": "next start",
     "lint": "next lint",
     "preview": "next build && next start",
