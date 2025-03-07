@@ -26,7 +26,9 @@ export function ModeToggle() {
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
         <DropdownMenuItem
-          className={theme === "light" ? "bg-primary" : ""}
+          className={
+            theme === "light" ? "bg-primary text-primary-foreground" : ""
+          }
           onClick={() => setTheme("light")}
         >
           <span className="sr-only">Toggle light theme</span>
@@ -42,7 +44,9 @@ export function ModeToggle() {
           Dark
         </DropdownMenuItem>
         <DropdownMenuItem
-          className={theme === "system" ? "bg-primary" : ""}
+          className={
+            theme === "system" ? "bg-primary text-primary-foreground" : ""
+          }
           onClick={() => setTheme("system")}
         >
           <span className="sr-only">Toggle system theme</span>
