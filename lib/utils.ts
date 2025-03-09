@@ -37,7 +37,7 @@ export function formatDateShort(date: Date): string {
 }
 
 export function formatForAladhanApi(date: Date): string {
-  return format(date, "yyyy-MM-dd")
+  return format(date, "dd-MM-yyyy")
 }
 
 export function formatToPrayerTimes(
