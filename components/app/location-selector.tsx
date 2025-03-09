@@ -1,9 +1,8 @@
 "use client"
 
 import { useState } from "react"
+import { useOldGeolocation } from "@/hooks-old/use-old-geolocation"
 import { MapPin, Search } from "lucide-react"
-
-import { useGeolocation } from "@/hooks/use-geolocation"
 
 import { Alert, AlertDescription } from "@/components/ui/alert"
 import { Button } from "@/components/ui/button"
@@ -18,7 +17,7 @@ import { Input } from "@/components/ui/input"
 
 export function LocationSelector() {
   const { latitude, longitude, error, loading, updateCoordinates } =
-    useGeolocation()
+    useOldGeolocation()
   const [city, setCity] = useState("")
   const [searchError, setSearchError] = useState<string | null>(null)
   const [isSearching, setIsSearching] = useState(false)

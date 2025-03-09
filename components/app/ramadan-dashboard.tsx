@@ -1,30 +1,26 @@
 "use client"
 
 import { useState } from "react"
-
-import { useGeolocation } from "@/hooks/use-geolocation"
-import { usePrayerTimes } from "@/hooks/use-prayer-times"
+import { useOldGeolocation } from "@/hooks-old/use-old-geolocation"
+import { usePrayerTimes } from "@/hooks-old/use-prayer-times"
 
 import { CountdownTimer } from "@/components/app/countdown-timer"
 import { DailyDua } from "@/components/app/daily-dua"
 import { LocationSelector } from "@/components/app/location-selector"
-import { PrayerTimesDisplay } from "@/components/app/prayer-times-display"
-import { RamadanCalendar } from "@/components/app/ramadan-calendar"
+import { OldRamadanCalendar } from "@/components/app/old-ramadan-calendar"
+import { PrayerTimes } from "@/components/app/prayer-times"
 
 export function RamadanDashboard() {
   const today = new Date()
   const [selectedDate, setSelectedDate] = useState<Date>(today)
 
-  const {
-    prayerTimes,
-    isLoading: prayerTimesLoading,
-  } = usePrayerTimes()
+  const { prayerTimes, isLoading: prayerTimesLoading } = usePrayerTimes()
 
   const handleDateSelect = (date: Date) => {
     setSelectedDate(date)
   }
 
-  const { loading: locationLoading } = useGeolocation()
+  const { loading: locationLoading } = useOldGeolocation()
 
   return (
     <div className="mx-auto max-w-7xl p-4">
@@ -34,12 +30,9 @@ export function RamadanDashboard() {
 
       <div className="grid gap-6 lg:grid-cols-12">
         <div className="space-y-6 lg:col-span-8">
-          <CountdownTimer
-            prayerTimes={prayerTimes}
-            isLoading={locationLoading || prayerTimesLoading}
-          />
+          <CountdownTimer />
 
-          <PrayerTimesDisplay prayerTimes={prayerTimes} date={selectedDate} />
+          <PrayerTimes />
 
           <DailyDua date={selectedDate} />
         </div>
@@ -47,7 +40,7 @@ export function RamadanDashboard() {
         <div className="space-y-6 lg:col-span-4">
           <LocationSelector />
 
-          <RamadanCalendar
+          <OldRamadanCalendar
             selectedDate={selectedDate}
             onDateSelect={handleDateSelect}
           />
