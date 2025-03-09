@@ -38,6 +38,10 @@ export function formatDateShort(date: Date): string {
   return format(date, "MMM d, yyyy")
 }
 
+export function formatForAladhanApi(date: Date): string {
+  return format(date, "yyyy-MM-dd")
+}
+
 /**
  * Determines the appropriate prayer calculation method based on a timezone
  * @param timezone The timezone string (e.g., "America/New_York")

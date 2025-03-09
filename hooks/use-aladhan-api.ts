@@ -1,6 +1,7 @@
 import { useQuery } from "@tanstack/react-query"
 
 import { AladhanApiV1TimingsEndpointResponse } from "@/types"
+import { formatForAladhanApi } from "@/lib/utils"
 
 const fetchTimings = async (
   date: string,
@@ -27,12 +28,11 @@ const fetchTimings = async (
 }
 
 export const useAladhanApi = (
-  date: Date,
+  date: Date = new Date(),
   latitude: number | null,
   longitude: number | null
 ) => {
-  // format today's date from DD/MM/YYYY to YYYY-MM-DD
-  const formattedDate = date.toLocaleDateString("en-GB").split("/").join("-")
+  const formattedDate = formatForAladhanApi(date)
   return useQuery({
     queryKey: ["timings", formattedDate, latitude, longitude],
     queryFn: () => fetchTimings(formattedDate, latitude, longitude),

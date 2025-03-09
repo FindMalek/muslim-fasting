@@ -4,14 +4,7 @@ import { PrayerTimesResponse } from "@/types"
 
 export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.nextUrl)
-  // format the date to DD-MM-YYYY
-  const defaultDate = new Date()
-    .toISOString()
-    .split("T")[0]
-    .split("-")
-    .reverse()
-    .join("-")
-  const date = searchParams.get("date") || defaultDate
+  const date = searchParams.get("date")
   const latitude = searchParams.get("latitude")
   const longitude = searchParams.get("longitude")
 
