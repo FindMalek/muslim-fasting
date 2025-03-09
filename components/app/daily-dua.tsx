@@ -1,6 +1,6 @@
 "use client"
 
-import { useMemo, useState, useCallback } from "react"
+import { useCallback, useMemo, useState } from "react"
 
 import { ramadanDuas } from "@/config/consts"
 import { useSelectedDateStore } from "@/hooks/use-selected-date-store"
@@ -40,8 +40,7 @@ export function DailyDua() {
           "This could be due to your browser's privacy settings."
       )
     }
-  }
-, [dua])
+  }, [dua])
 
   return (
     <div className="rounded-lg bg-card text-card-foreground">

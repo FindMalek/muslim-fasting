@@ -1,6 +1,7 @@
 import { useQuery } from "@tanstack/react-query"
 
 import { AladhanApiV1TimingsEndpointResponse } from "@/types"
+
 import { formatForAladhanApi } from "@/lib/utils"
 
 const fetchTimings = async (

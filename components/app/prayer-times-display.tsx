@@ -6,7 +6,7 @@ import { PrayerTimesSkeleton } from "@/components/app/prayer-times-skeleton"
 import { Card, CardContent } from "@/components/ui/card"
 
 interface PrayerTimesDisplayProps {
-  prayerTimes: { 
+  prayerTimes: {
     fajr: string
     sunrise: string
     dhuhr: string

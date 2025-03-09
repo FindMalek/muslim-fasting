@@ -11,21 +11,21 @@ export function cn(...inputs: ClassValue[]) {
 export function formatTime(seconds: number): string {
   // Handle zero or negative seconds properly
   if (seconds <= 0) {
-    return "00:00:00";
+    return "00:00:00"
   }
 
   // Ensure seconds is a positive integer
-  seconds = Math.max(0, Math.floor(seconds));
+  seconds = Math.max(0, Math.floor(seconds))
 
-  const hours = Math.floor(seconds / 3600);
-  const mins = Math.floor((seconds % 3600) / 60);
-  const secs = Math.floor(seconds % 60);
+  const hours = Math.floor(seconds / 3600)
+  const mins = Math.floor((seconds % 3600) / 60)
+  const secs = Math.floor(seconds % 60)
 
   return [
     hours.toString().padStart(2, "0"),
     mins.toString().padStart(2, "0"),
     secs.toString().padStart(2, "0"),
-  ].join(":");
+  ].join(":")
 }
 
 export function formatDate(date: Date): string {
@@ -79,7 +79,7 @@ export function formatToPrayerTimes(
 }
 
 // Convert Date-based prayer times to string format for components
-export function formatToStringPrayerTimes(prayerTimes: PrayerTimes | null): { 
+export function formatToStringPrayerTimes(prayerTimes: PrayerTimes | null): {
   fajr: string
   sunrise: string
   dhuhr: string
@@ -89,12 +89,12 @@ export function formatToStringPrayerTimes(prayerTimes: PrayerTimes | null): {
   midnight: string
 } | null {
   if (!prayerTimes) return null
-  
+
   const formatTimeString = (time: Date | null): string => {
     if (!time) return "N/A"
     return time.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })
   }
-  
+
   return {
     fajr: formatTimeString(prayerTimes.fajr),
     sunrise: formatTimeString(prayerTimes.sunrise),
