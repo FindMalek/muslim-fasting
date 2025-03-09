@@ -1,114 +1,134 @@
 "use client"
 
-import { useState } from "react"
+import { useCallback, useMemo, useState } from "react"
 import { ChevronLeft, ChevronRight } from "lucide-react"
 
 import { formatDateShort } from "@/lib/utils"
+import { useAladhanApi } from "@/hooks/use-aladhan-api"
 import { useGeolocation } from "@/hooks/use-geolocation"
-import { usePrayerTimes } from "@/hooks/use-prayer-times"
+import { useSelectedDateStore } from "@/hooks/use-selected-date-store"
 
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
-import { Skeleton } from "@/components/ui/skeleton"
 
-interface RamadanCalendarProps {
-  selectedDate: Date
-  onDateSelect: (date: Date) => void
-}
+import { Skeleton } from "../ui/skeleton"
 
-export function RamadanCalendar({
-  selectedDate,
-  onDateSelect,
-}: RamadanCalendarProps) {
-  const today = new Date()
-  const [currentMonth, setCurrentMonth] = useState(today.getMonth())
-  const [currentYear, setCurrentYear] = useState(today.getFullYear())
+export function RamadanCalendar() {
+  const { selectedDate, setSelectedDate } = useSelectedDateStore()
+  const { location } = useGeolocation()
+  const { data, isLoading } = useAladhanApi(
+    selectedDate,
+    location.latitude,
+    location.longitude
+  )
+  const prayerTimes = useMemo(() => {
+    if (!data) return null
 
-  const { loading: locationLoading } = useGeolocation()
+    return data.data.timings
+  }, [data])
 
-  const { 
-    prayerTimes, 
-    isLoading: prayerTimesLoading 
-  } = usePrayerTimes()
+  const today = useMemo(() => new Date(), [])
+  const [shownCalendarMonth, setShownCalendarMonth] = useState(today.getMonth())
+  const [shownCalendarYear, setShownCalendarYear] = useState(
+    today.getFullYear()
+  )
 
-  const isLoading = locationLoading || prayerTimesLoading
+  const daysInShownCalendarMonth = useMemo(
+    () => new Date(shownCalendarYear, shownCalendarMonth + 1, 0).getDate(),
+    [shownCalendarYear, shownCalendarMonth]
+  )
 
-  const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate()
-  const firstDayOfMonth = new Date(currentYear, currentMonth, 1).getDay()
+  const firstDayOfShownCalendarMonth = useMemo(
+    () => new Date(shownCalendarYear, shownCalendarMonth, 1).getDay(),
+    [shownCalendarYear, shownCalendarMonth]
+  )
 
-  const prevMonth = () => {
-    if (currentMonth === 0) {
-      setCurrentMonth(11)
-      setCurrentYear(currentYear - 1)
+  const showPreviousMonthInCalendar = useCallback(() => {
+    if (shownCalendarMonth === 0) {
+      setShownCalendarMonth(11)
+      setShownCalendarYear(shownCalendarYear - 1)
     } else {
-      setCurrentMonth(currentMonth - 1)
+      setShownCalendarMonth(shownCalendarMonth - 1)
     }
-  }
+  }, [shownCalendarMonth, shownCalendarYear])
 
-  const nextMonth = () => {
-    if (currentMonth === 11) {
-      setCurrentMonth(0)
-      setCurrentYear(currentYear + 1)
+  const showNextMonthInCalendar = useCallback(() => {
+    if (shownCalendarMonth === 11) {
+      setShownCalendarMonth(0)
+      setShownCalendarYear(shownCalendarYear + 1)
     } else {
-      setCurrentMonth(currentMonth + 1)
+      setShownCalendarMonth(shownCalendarMonth + 1)
     }
-  }
+  }, [shownCalendarMonth, shownCalendarYear])
 
-  const isToday = (day: number) => {
-    const date = new Date(currentYear, currentMonth, day)
-    return date.toDateString() === today.toDateString()
-  }
+  const isToday = useCallback(
+    (day: number) => {
+      const date = new Date(shownCalendarYear, shownCalendarMonth, day)
+      return date.toDateString() === today.toDateString()
+    },
+    [shownCalendarYear, shownCalendarMonth, today]
+  )
 
-  const isSelected = (day: number) => {
-    const date = new Date(currentYear, currentMonth, day)
-    return date.toDateString() === selectedDate.toDateString()
-  }
+  const isDateInCalendarSelected = useCallback(
+    (day: number) => {
+      const date = new Date(shownCalendarYear, shownCalendarMonth, day)
+      return date.toDateString() === selectedDate.toDateString()
+    },
+    [shownCalendarYear, shownCalendarMonth, selectedDate]
+  )
 
-  const selectDate = (day: number) => {
-    const date = new Date(currentYear, currentMonth, day)
-    onDateSelect(date)
-  }
+  const selectDate = useCallback(
+    (day: number) => {
+      const date = new Date(shownCalendarYear, shownCalendarMonth, day)
+      setSelectedDate(date)
+    },
+    [shownCalendarYear, shownCalendarMonth, setSelectedDate]
+  )
 
-  const monthName = new Date(currentYear, currentMonth).toLocaleString(
-    "default",
-    { month: "long" }
+  const shownCalendarMonthName = useMemo(
+    () =>
+      new Date(shownCalendarYear, shownCalendarMonth).toLocaleString(
+        "default",
+        {
+          month: "long",
+        }
+      ),
+    [shownCalendarYear, shownCalendarMonth]
   )
 
   // Generate calendar days
-  const calendarDays = []
-  const daysOfWeek = ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"]
-
-  // Add empty cells for days before the first day of the month
-  for (let i = 0; i < firstDayOfMonth; i++) {
-    calendarDays.push(<div key={`empty-${i}`}></div>)
-  }
-
-  // Add cells for each day of the month
-  for (let day = 1; day <= daysInMonth; day++) {
-    calendarDays.push(
-      <div key={day}>
-        <Button
-          variant="ghost"
-          className={`size-10 p-0 ${isToday(day) ? "bg-primary/10 text-primary" : ""} ${isSelected(day) ? "bg-primary text-primary-foreground hover:bg-primary/70" : ""}`}
-          onClick={() => selectDate(day)}
-        >
-          {day}
-        </Button>
-      </div>
-    )
-  }
+  const daysOfWeek = useMemo(
+    () => [
+      "Sunday",
+      "Monday",
+      "Tuesday",
+      "Wednesday",
+      "Thursday",
+      "Friday",
+      "Saturday",
+    ],
+    []
+  )
 
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <h2 className="text-xl font-semibold">
-          {monthName} {currentYear}
+          {shownCalendarMonthName} {shownCalendarYear}
         </h2>
         <div className="flex gap-1">
-          <Button variant="outline" size="icon" onClick={prevMonth}>
+          <Button
+            variant="outline"
+            size="icon"
+            onClick={showPreviousMonthInCalendar}
+          >
             <ChevronLeft className="size-4" />
           </Button>
-          <Button variant="outline" size="icon" onClick={nextMonth}>
+          <Button
+            variant="outline"
+            size="icon"
+            onClick={showNextMonthInCalendar}
+          >
             <ChevronRight className="size-4" />
           </Button>
         </div>
@@ -120,7 +140,23 @@ export function RamadanCalendar({
             {day}
           </div>
         ))}
-        {calendarDays}
+        {Array.from({ length: firstDayOfShownCalendarMonth }, (_, i) => (
+          <div key={`empty-${i}`}></div>
+        ))}
+        {Array.from({ length: daysInShownCalendarMonth }, (_, index) => {
+          const day = index + 1
+          return (
+            <div key={day}>
+              <Button
+                variant="ghost"
+                className={`${isToday(day) ? "bg-primary/10 text-primary" : ""} ${isDateInCalendarSelected(day) ? "bg-primary text-primary-foreground hover:bg-primary/70" : ""}`}
+                onClick={() => selectDate(day)}
+              >
+                {day}
+              </Button>
+            </div>
+          )
+        })}
       </div>
 
       {isLoading ? (
@@ -147,16 +183,12 @@ export function RamadanCalendar({
             </h3>
             <div className="grid grid-cols-2 gap-2 text-sm">
               <div>
-                <p className="text-muted-foreground">Suhur ends:</p>
-                <p className="font-medium">
-                  {prayerTimes.fajr || "N/A"}
-                </p>
+                <p className="text-muted-foreground">Suhur ends (Imsak):</p>
+                <p className="font-medium">{prayerTimes.Imsak || "N/A"}</p>
               </div>
               <div>
-                <p className="text-muted-foreground">Iftar:</p>
-                <p className="font-medium">
-                  {prayerTimes.maghrib || "N/A"}
-                </p>
+                <p className="text-muted-foreground">Iftar time:</p>
+                <p className="font-medium">{prayerTimes.Maghrib || "N/A"}</p>
               </div>
             </div>
           </CardContent>
