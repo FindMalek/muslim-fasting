@@ -1,27 +1,29 @@
 "use client"
 
-import { useState } from "react"
+import { useMemo, useState, useCallback } from "react"
 
 import { ramadanDuas } from "@/config/consts"
+import { useSelectedDateStore } from "@/hooks/use-selected-date-store"
 
 import { Icons } from "@/components/shared/icons"
 import { Button } from "@/components/ui/button"
 
-interface DailyDuaProps {
-  date: Date
-}
-
-export function DailyDua({ date }: DailyDuaProps) {
+export function DailyDua() {
   const [copied, setCopied] = useState(false)
-
-  const dayOfYear = Math.floor(
-    (date.getTime() - new Date(date.getFullYear(), 0, 0).getTime()) /
-      (1000 * 60 * 60 * 24)
+  const selectedDate = useSelectedDateStore((state) => state.selectedDate)
+  const dayOfYear = useMemo(
+    () =>
+      Math.floor(
+        (selectedDate.getTime() -
+          new Date(selectedDate.getFullYear(), 0, 0).getTime()) /
+          (1000 * 60 * 60 * 24)
+      ),
+    [selectedDate]
   )
-  const duaIndex = dayOfYear % ramadanDuas.length
-  const dua = ramadanDuas[duaIndex]
+  const duaIndex = useMemo(() => dayOfYear % ramadanDuas.length, [dayOfYear])
+  const dua = useMemo(() => ramadanDuas[duaIndex], [duaIndex])
 
-  const handleCopy = () => {
+  const handleCopy = useCallback(() => {
     if (navigator.clipboard) {
       navigator.clipboard
         .writeText(
@@ -39,6 +41,7 @@ export function DailyDua({ date }: DailyDuaProps) {
       )
     }
   }
+, [dua])
 
   return (
     <div className="rounded-lg bg-card text-card-foreground">
