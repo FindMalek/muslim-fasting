@@ -1,12 +1,11 @@
 "use client"
 
 import { useEffect, useState } from "react"
+import { useOldGeolocation } from "@/hooks-old/use-old-geolocation"
+import { usePrayerMethod } from "@/hooks-old/use-prayer-method"
 import { format } from "date-fns"
 
 import type { PrayerTimingsData } from "@/types"
-
-import { useGeolocation } from "@/hooks/use-geolocation"
-import { usePrayerMethod } from "@/hooks/use-prayer-method"
 
 import { fetchPrayerTimes } from "@/actions/prayer-times"
 
@@ -38,7 +37,7 @@ export function usePrayerTimes() {
     error: geoError,
     loading: geoLoading,
     updateLocation,
-  } = useGeolocation()
+  } = useOldGeolocation()
 
   const [prayerTimes, setPrayerTimes] = useState<FormattedPrayerTimes | null>(
     null

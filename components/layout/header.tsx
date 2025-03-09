@@ -1,9 +1,9 @@
 import Link from "next/link"
 
-import { Settings } from "@/components/layout/settings"
+import { siteConfig } from "@/config/site"
+
 import { Icons } from "@/components/shared/icons"
 import { ModeToggle } from "@/components/shared/mode-toggle"
-import { siteConfig } from "@/config/site"
 
 export function Header() {
   return (
@@ -17,7 +17,11 @@ export function Header() {
         </div>
         <div className="flex items-center gap-3">
           <ModeToggle />
-          <Link href={siteConfig.links.github} target="_blank" rel="noopener noreferrer">
+          <Link
+            href={siteConfig.links.github}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
             <Icons.github className="size-5" />
           </Link>
           {/* <Settings /> */}

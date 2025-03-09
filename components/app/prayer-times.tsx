@@ -2,44 +2,29 @@
 
 import { Sunrise, Sunset } from "lucide-react"
 
+import { formatDate } from "@/lib/utils"
+import { useAladhanApi } from "@/hooks/use-aladhan-api"
+import { useGeolocation } from "@/hooks/use-geolocation"
+import { useSelectedDateStore } from "@/hooks/use-selected-date-store"
+
 import { PrayerTimesSkeleton } from "@/components/app/prayer-times-skeleton"
 import { Card, CardContent } from "@/components/ui/card"
 
-interface PrayerTimesDisplayProps {
-  prayerTimes: {
-    fajr: string
-    sunrise: string
-    dhuhr: string
-    asr: string
-    maghrib: string
-    isha: string
-    midnight: string
-  } | null
-  date: Date
-}
-
-export function PrayerTimesDisplay({
-  prayerTimes,
-  date,
-}: PrayerTimesDisplayProps) {
-  if (!prayerTimes) {
+export function PrayerTimes() {
+  const { location } = useGeolocation()
+  const selectedDate = useSelectedDateStore((state) => state.selectedDate)
+  const { data, isLoading } = useAladhanApi(
+    selectedDate,
+    location.latitude,
+    location.longitude
+  )
+  if (isLoading || !data) {
     return <PrayerTimesSkeleton />
   }
-
-  const formatPrayerTime = (time: string | null) => {
-    if (!time) return "N/A"
-    return time
-  }
-
   return (
     <div className="space-y-4">
       <h2 className="text-center text-xl font-semibold">
-        {date.toLocaleDateString("en-US", {
-          weekday: "long",
-          month: "long",
-          day: "numeric",
-          year: "numeric",
-        })}
+        {formatDate(selectedDate)}
       </h2>
 
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
@@ -49,10 +34,8 @@ export function PrayerTimesDisplay({
               <Sunrise className="size-6 text-primary" />
             </div>
             <div>
-              <p className="text-sm font-medium">Suhur Ends (Fajr)</p>
-              <p className="text-2xl font-bold">
-                {formatPrayerTime(prayerTimes.fajr)}
-              </p>
+              <p className="text-sm font-medium">Suhur Ends (Imsak)</p>
+              <p className="text-2xl font-bold">{data.data.timings.Imsak}</p>
             </div>
           </CardContent>
         </Card>
@@ -64,39 +47,37 @@ export function PrayerTimesDisplay({
             </div>
             <div>
               <p className="text-sm font-medium">Iftar (Maghrib)</p>
-              <p className="text-2xl font-bold">
-                {formatPrayerTime(prayerTimes.maghrib)}
-              </p>
+              <p className="text-2xl font-bold">{data.data.timings.Maghrib}</p>
             </div>
           </CardContent>
         </Card>
       </div>
 
-      <div className="mt-6 grid grid-cols-2 gap-4 md:grid-cols-3">
+      <div className="mt-6 grid grid-cols-2 gap-4 md:grid-cols-4">
+        <Card>
+          <CardContent className="p-4">
+            <p className="text-sm font-medium">Fajr</p>
+            <p className="text-lg font-semibold">{data.data.timings.Fajr}</p>
+          </CardContent>
+        </Card>
         <Card>
           <CardContent className="p-4">
             <p className="text-sm font-medium">Dhuhr</p>
-            <p className="text-lg font-semibold">
-              {formatPrayerTime(prayerTimes.dhuhr)}
-            </p>
+            <p className="text-lg font-semibold">{data.data.timings.Dhuhr}</p>
           </CardContent>
         </Card>
 
         <Card>
           <CardContent className="p-4">
             <p className="text-sm font-medium">Asr</p>
-            <p className="text-lg font-semibold">
-              {formatPrayerTime(prayerTimes.asr)}
-            </p>
+            <p className="text-lg font-semibold">{data.data.timings.Asr}</p>
           </CardContent>
         </Card>
 
         <Card>
           <CardContent className="p-4">
             <p className="text-sm font-medium">Isha</p>
-            <p className="text-lg font-semibold">
-              {formatPrayerTime(prayerTimes.isha)}
-            </p>
+            <p className="text-lg font-semibold">{data.data.timings.Isha}</p>
           </CardContent>
         </Card>
       </div>
