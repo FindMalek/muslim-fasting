@@ -34,7 +34,7 @@ export function RamadanDashboard() {
 
           <PrayerTimes />
 
-          <DailyDua date={selectedDate} />
+          <DailyDua />
         </div>
 
         <div className="space-y-6 lg:col-span-4">
