@@ -159,3 +159,81 @@ export const timezoneOptions = [
   { value: "America/Argentina/Buenos_Aires", name: "Buenos Aires (Argentina)" },
   { value: "Africa/Johannesburg", name: "Johannesburg (South Africa)" },
 ]
+
+export const prayerCalculationMethods = [
+  { value: 0, name: "Jafari / Shia Ithna-Ashari", timezone: "Asia/Tehran" },
+  {
+    value: 1,
+    name: "University of Islamic Sciences, Karachi",
+    timezone: "Asia/Karachi",
+  },
+  {
+    value: 2,
+    name: "Islamic Society of North America",
+    timezone: "America/New_York",
+  },
+  { value: 3, name: "Muslim World League", timezone: "Asia/Riyadh" },
+  { value: 4, name: "Umm Al-Qura University, Makkah", timezone: "Asia/Riyadh" },
+  {
+    value: 5,
+    name: "Egyptian General Authority of Survey",
+    timezone: "Africa/Cairo",
+  },
+  {
+    value: 7,
+    name: "Institute of Geophysics, University of Tehran",
+    timezone: "Asia/Tehran",
+  },
+  { value: 8, name: "Gulf Region", timezone: "Asia/Dubai" },
+  { value: 9, name: "Kuwait", timezone: "Asia/Kuwait" },
+  { value: 10, name: "Qatar", timezone: "Asia/Qatar" },
+  {
+    value: 11,
+    name: "Majlis Ugama Islam Singapura, Singapore",
+    timezone: "Asia/Singapore",
+  },
+  {
+    value: 12,
+    name: "Union Organization islamic de France",
+    timezone: "Europe/Paris",
+  },
+  {
+    value: 13,
+    name: "Diyanet İşleri Başkanlığı, Turkey",
+    timezone: "Europe/Istanbul",
+  },
+  {
+    value: 14,
+    name: "Spiritual Administration of Muslims of Russia",
+    timezone: "Europe/Moscow",
+  },
+  {
+    value: 15,
+    name: "Moonsighting Committee Worldwide",
+    timezone: "America/New_York",
+  },
+  { value: 16, name: "Dubai (experimental)", timezone: "Asia/Dubai" },
+  {
+    value: 17,
+    name: "Jabatan Kemajuan Islam Malaysia (JAKIM)",
+    timezone: "Asia/Kuala_Lumpur",
+  },
+  { value: 18, name: "Tunisia", timezone: "Africa/Tunis" },
+  { value: 19, name: "Algeria", timezone: "Africa/Algiers" },
+  {
+    value: 20,
+    name: "KEMENAG - Kementerian Agama Republik Indonesia",
+    timezone: "Asia/Jakarta",
+  },
+  { value: 21, name: "Morocco", timezone: "Africa/Casablanca" },
+  {
+    value: 22,
+    name: "Comunidade Islamica de Lisboa",
+    timezone: "Europe/Lisbon",
+  },
+  {
+    value: 23,
+    name: "Ministry of Awqaf, Islamic Affairs and Holy Places, Jordan",
+    timezone: "Asia/Amman",
+  },
+]
