@@ -160,16 +160,16 @@ export function RamadanCalendar() {
 
       {isLoading ? (
         <Card className="mt-6">
-          <CardContent className="p-4">
-            <Skeleton className="mb-2 h-5 w-36" />
-            <div className="grid grid-cols-2 gap-2">
+          <CardContent>
+            <Skeleton className="mb-3 h-6 w-24" />
+            <div className="grid grid-cols-2 gap-2 text-sm">
               <div>
-                <Skeleton className="mb-1 h-4 w-24" />
-                <Skeleton className="h-5 w-20" />
+                <Skeleton className="mb-1 h-4 w-32" />
+                <Skeleton className="h-4 w-10" />
               </div>
               <div>
-                <Skeleton className="mb-1 h-4 w-24" />
-                <Skeleton className="h-5 w-20" />
+                <Skeleton className="mb-1 h-4 w-16" />
+                <Skeleton className="h-4 w-10" />
               </div>
             </div>
           </CardContent>
