@@ -1,27 +1,29 @@
 "use client"
 
-import { useState } from "react"
+import { useCallback, useMemo, useState } from "react"
 
 import { ramadanDuas } from "@/config/consts"
+import { useSelectedDateStore } from "@/hooks/use-selected-date-store"
 
 import { Icons } from "@/components/shared/icons"
 import { Button } from "@/components/ui/button"
 
-interface DailyDuaProps {
-  date: Date
-}
-
-export function DailyDua({ date }: DailyDuaProps) {
+export function DailyDua() {
   const [copied, setCopied] = useState(false)
-
-  const dayOfYear = Math.floor(
-    (date.getTime() - new Date(date.getFullYear(), 0, 0).getTime()) /
-      (1000 * 60 * 60 * 24)
+  const selectedDate = useSelectedDateStore((state) => state.selectedDate)
+  const dayOfYear = useMemo(
+    () =>
+      Math.floor(
+        (selectedDate.getTime() -
+          new Date(selectedDate.getFullYear(), 0, 0).getTime()) /
+          (1000 * 60 * 60 * 24)
+      ),
+    [selectedDate]
   )
-  const duaIndex = dayOfYear % ramadanDuas.length
-  const dua = ramadanDuas[duaIndex]
+  const duaIndex = useMemo(() => dayOfYear % ramadanDuas.length, [dayOfYear])
+  const dua = useMemo(() => ramadanDuas[duaIndex], [duaIndex])
 
-  const handleCopy = () => {
+  const handleCopy = useCallback(() => {
     if (navigator.clipboard) {
       navigator.clipboard
         .writeText(
@@ -38,13 +40,13 @@ export function DailyDua({ date }: DailyDuaProps) {
           "This could be due to your browser's privacy settings."
       )
     }
-  }
+  }, [dua])
 
   return (
-    <div className="rounded-lg bg-card text-card-foreground">
+    <div className="bg-card text-card-foreground rounded-lg">
       <div className="flex flex-col space-y-1.5">
         <div className="flex items-center justify-between">
-          <h3 className="text-lg font-semibold leading-none tracking-tight">
+          <h3 className="text-lg leading-none font-semibold tracking-tight">
             Daily Dua
           </h3>
           <Button variant="ghost" size="icon" onClick={handleCopy}>
@@ -55,7 +57,7 @@ export function DailyDua({ date }: DailyDuaProps) {
             )}
           </Button>
         </div>
-        <p className="text-sm text-muted-foreground">{dua.title}</p>
+        <p className="text-muted-foreground text-sm">{dua.title}</p>
       </div>
       <div className="p-6 pt-0">
         <div className="space-y-4">
@@ -64,7 +66,7 @@ export function DailyDua({ date }: DailyDuaProps) {
           </p>
           <p className="text-sm italic">{dua.transliteration}</p>
           <p className="text-sm">{dua.translation}</p>
-          <p className="text-xs text-muted-foreground">Source: {dua.source}</p>
+          <p className="text-muted-foreground text-xs">Source: {dua.source}</p>
         </div>
       </div>
     </div>

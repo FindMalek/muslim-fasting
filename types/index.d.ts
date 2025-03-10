@@ -1,5 +1,3 @@
-import type { Icon } from "lucide-react"
-
 import { Icons } from "@/components/shared/icons"
 
 export type NavItem = {
@@ -47,55 +45,6 @@ export type SiteConfig = {
     github?: string
   }
   keywords: string[]
-}
-
-export interface PrayerTimesDto {
-  fajr: string
-  sunrise: string
-  dhuhr: string
-  asr: string
-  maghrib: string
-  isha: string
-  midnight: string
-}
-
-export interface PrayerTimes {
-  fajr: Date | null
-  sunrise: Date | null
-  dhuhr: Date | null
-  asr: Date | null
-  maghrib: Date | null
-  isha: Date | null
-  midnight: Date | null
-  imsak: Date | null
-}
-
-export interface HijriDate {
-  date: string
-  day: string
-  month: {
-    number: number
-    en: string
-    ar: string
-  }
-  year: string
-  holidays: string[]
-}
-
-export interface GregorianDate {
-  date: string
-  day: string
-  month: {
-    number: number
-    en: string
-  }
-  year: string
-}
-
-export interface PrayerTimesMeta {
-  latitude: number
-  longitude: number
-  timezone: string
 }
 
 export type PrayerTimingsData = {
@@ -146,6 +95,96 @@ export type PrayerTimesResponse = {
       latitude: number
       longitude: number
       timezone: string
+    }
+  }
+}
+
+export type AladhanApiV1TimingsEndpointResponse = {
+  code: number
+  status: string
+  data: {
+    timings: {
+      Fajr: string
+      Sunrise: string
+      Dhuhr: string
+      Asr: string
+      Sunset: string
+      Maghrib: string
+      Isha: string
+      Imsak: string
+      Midnight: string
+      Firstthird: string
+      Lastthird: string
+    }
+    date: {
+      readable: string
+      timestamp: string
+      hijri: {
+        date: string
+        format: string
+        day: string
+        month: {
+          number: number
+          en: string
+          ar: string
+        }
+        year: string
+        holidays: string[]
+        adjustedHolidays: string[]
+        method: string
+      }
+      gregorian: {
+        date: string
+        format: string
+        day: string
+        weekday: {
+          en: string
+          ar: string
+        }
+        month: {
+          number: number
+          en: string
+          ar: string
+          days: number
+        }
+        year: string
+        designation: {
+          abbreviated: string
+          expanded: string
+        }
+        lunarSighting: boolean
+      }
+    }
+    meta: {
+      latitude: number
+      longitude: number
+      timezone: string
+      method: {
+        id: number
+        name: string
+        params: {
+          Fajr: number
+          Isha: number
+        }
+        location: {
+          latitude: number
+          longitude: number
+        }
+      }
+      latitudeAdjustmentMethod: string
+      midnightMode: string
+      school: string
+      offset: {
+        Imsak: number
+        Fajr: number
+        Sunrise: number
+        Dhuhr: number
+        Asr: number
+        Maghrib: number
+        Sunset: number
+        Isha: number
+        Midnight: number
+      }
     }
   }
 }

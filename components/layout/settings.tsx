@@ -2,6 +2,7 @@
 
 import { useState } from "react"
 import { useRouter, useSearchParams } from "next/navigation"
+import { VisuallyHidden } from "@radix-ui/react-visually-hidden"
 import { useTheme } from "next-themes"
 
 import { Icons } from "@/components/shared/icons"
@@ -15,7 +16,14 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 import { Separator } from "@/components/ui/separator"
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
+import {
+  Sheet,
+  SheetContent,
+  SheetDescription,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet"
 import { Switch } from "@/components/ui/switch"
 
 export function Settings() {
@@ -64,6 +72,14 @@ export function Settings() {
         </Button>
       </SheetTrigger>
       <SheetContent>
+        <SheetHeader>
+          <VisuallyHidden>
+            <SheetTitle>Settings</SheetTitle>
+            <SheetDescription>
+              Adjust your preferences for a personalized experience.
+            </SheetDescription>
+          </VisuallyHidden>
+        </SheetHeader>
         <div className="space-y-6 py-6">
           <div className="space-y-3">
             <h3 className="text-sm font-medium">Theme</h3>
@@ -106,7 +122,7 @@ export function Settings() {
           <div className="flex items-center justify-between">
             <div className="space-y-0.5">
               <Label htmlFor="24h-format">24-Hour Format</Label>
-              <p className="text-sm text-muted-foreground">
+              <p className="text-muted-foreground text-sm">
                 Display time in 24-hour format
               </p>
             </div>
@@ -123,11 +139,11 @@ export function Settings() {
             <div className="space-y-0.5">
               <Label htmlFor="notifications">
                 Prayer Notifications
-                <span className="text-xs text-muted-foreground">
+                <span className="text-muted-foreground text-xs">
                   (coming soon)
                 </span>
               </Label>
-              <p className="text-sm text-muted-foreground">
+              <p className="text-muted-foreground text-sm">
                 Receive notifications for prayer times
               </p>
             </div>
