@@ -10,8 +10,7 @@ import { useSelectedDateStore } from "@/hooks/use-selected-date-store"
 
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
-
-import { Skeleton } from "../ui/skeleton"
+import { Skeleton } from "@/components/ui/skeleton"
 
 export function RamadanCalendar() {
   const { selectedDate, setSelectedDate } = useSelectedDateStore()
@@ -196,7 +195,7 @@ export function RamadanCalendar() {
       ) : (
         <Card className="mt-6">
           <CardContent className="p-4">
-            <p className="text-center text-muted-foreground">
+            <p className="text-muted-foreground text-center">
               Unable to load prayer times
             </p>
           </CardContent>
