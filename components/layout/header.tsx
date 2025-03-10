@@ -1,3 +1,4 @@
+import { Suspense } from "react"
 import Link from "next/link"
 
 import { siteConfig } from "@/config/site"
@@ -24,7 +25,7 @@ export function Header() {
           >
             <Icons.github className="size-5" />
           </Link>
-          {/* <Settings /> */}
+          <Suspense>{/*<Settings />*/}</Suspense>
         </div>
       </div>
     </header>
