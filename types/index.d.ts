@@ -47,55 +47,6 @@ export type SiteConfig = {
   keywords: string[]
 }
 
-export interface PrayerTimesDto {
-  fajr: string
-  sunrise: string
-  dhuhr: string
-  asr: string
-  maghrib: string
-  isha: string
-  midnight: string
-}
-
-export interface PrayerTimes {
-  fajr: Date | null
-  sunrise: Date | null
-  dhuhr: Date | null
-  asr: Date | null
-  maghrib: Date | null
-  isha: Date | null
-  midnight: Date | null
-  imsak: Date | null
-}
-
-export interface HijriDate {
-  date: string
-  day: string
-  month: {
-    number: number
-    en: string
-    ar: string
-  }
-  year: string
-  holidays: string[]
-}
-
-export interface GregorianDate {
-  date: string
-  day: string
-  month: {
-    number: number
-    en: string
-  }
-  year: string
-}
-
-export interface PrayerTimesMeta {
-  latitude: number
-  longitude: number
-  timezone: string
-}
-
 export type PrayerTimingsData = {
   Fajr: string
   Sunrise: string
