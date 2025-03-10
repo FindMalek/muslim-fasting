@@ -36,3 +36,7 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 certificates
+
+# Exclude IDE specific files
+.idea
+.vscode
