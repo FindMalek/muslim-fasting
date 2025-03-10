@@ -195,7 +195,7 @@ export function CountdownTimer() {
 
   return (
     <Card className="overflow-hidden">
-      <CardContent className="p-6">
+      <CardContent>
         <div className="mb-4 flex items-center justify-between">
           <h3 className="text-lg font-semibold">Time until {targetName}</h3>
           {icon === "sunset" ? (

@@ -176,7 +176,7 @@ export function RamadanCalendar() {
         </Card>
       ) : prayerTimes ? (
         <Card className="mt-6">
-          <CardContent className="p-4">
+          <CardContent>
             <h3 className="mb-2 font-medium">
               {formatDateShort(selectedDate)}
             </h3>
@@ -194,7 +194,7 @@ export function RamadanCalendar() {
         </Card>
       ) : (
         <Card className="mt-6">
-          <CardContent className="p-4">
+          <CardContent>
             <p className="text-muted-foreground text-center">
               Unable to load prayer times
             </p>

@@ -48,7 +48,7 @@ export default function Home() {
         </Card>
 
         <Card className="col-span-full lg:col-span-1">
-          <CardContent className="p-6">
+          <CardContent>
             <DailyDua />
           </CardContent>
         </Card>
