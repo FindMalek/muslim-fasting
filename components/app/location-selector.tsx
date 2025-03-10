@@ -1,8 +1,9 @@
 "use client"
 
 import { useState } from "react"
-import { useOldGeolocation } from "@/hooks-old/use-old-geolocation"
 import { MapPin, Search } from "lucide-react"
+
+import { useGeolocation } from "@/hooks/use-geolocation"
 
 import { Alert, AlertDescription } from "@/components/ui/alert"
 import { Button } from "@/components/ui/button"
@@ -16,8 +17,7 @@ import {
 import { Input } from "@/components/ui/input"
 
 export function LocationSelector() {
-  const { latitude, longitude, error, loading, updateCoordinates } =
-    useOldGeolocation()
+  const { location, error } = useGeolocation()
   const [city, setCity] = useState("")
   const [searchError, setSearchError] = useState<string | null>(null)
   const [isSearching, setIsSearching] = useState(false)
@@ -47,7 +47,7 @@ export function LocationSelector() {
       } else {
         // Use the first result
         const { lat, lon } = data[0]
-        updateCoordinates(parseFloat(lat), parseFloat(lon))
+        // updateCoordinates(parseFloat(lat), parseFloat(lon))
         setSearchError(null)
       }
     } catch (err) {
@@ -93,11 +93,11 @@ export function LocationSelector() {
             <p className="text-sm text-destructive">{searchError}</p>
           )}
 
-          {latitude && longitude && (
-            <div className="text-sm text-muted-foreground">
-              Current coordinates: {latitude.toFixed(4)}, {longitude.toFixed(4)}
-            </div>
-          )}
+          {/*{latitude && longitude && (*/}
+          {/*  <div className="text-sm text-muted-foreground">*/}
+          {/*    Current coordinates: {latitude.toFixed(4)}, {longitude.toFixed(4)}*/}
+          {/*  </div>*/}
+          {/*)}*/}
         </div>
       </CardContent>
       <CardFooter className="text-xs text-muted-foreground">
