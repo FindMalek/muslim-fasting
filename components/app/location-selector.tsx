@@ -90,7 +90,7 @@ export function LocationSelector() {
           </div>
 
           {searchError && (
-            <p className="text-sm text-destructive">{searchError}</p>
+            <p className="text-destructive text-sm">{searchError}</p>
           )}
 
           {/*{latitude && longitude && (*/}
@@ -100,7 +100,7 @@ export function LocationSelector() {
           {/*)}*/}
         </div>
       </CardContent>
-      <CardFooter className="text-xs text-muted-foreground">
+      <CardFooter className="text-muted-foreground text-xs">
         Coordinates are used to calculate accurate prayer times
       </CardFooter>
     </Card>

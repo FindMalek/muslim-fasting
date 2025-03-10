@@ -199,9 +199,9 @@ export function CountdownTimer() {
         <div className="mb-4 flex items-center justify-between">
           <h3 className="text-lg font-semibold">Time until {targetName}</h3>
           {icon === "sunset" ? (
-            <Sunset className="size-5 text-primary" />
+            <Sunset className="text-primary size-5" />
           ) : (
-            <Sunrise className="size-5 text-primary" />
+            <Sunrise className="text-primary size-5" />
           )}
         </div>
 
@@ -211,7 +211,7 @@ export function CountdownTimer() {
 
         <Progress value={progress} className="h-2" />
 
-        <div className="mt-2 flex justify-between text-xs text-muted-foreground">
+        <div className="text-muted-foreground mt-2 flex justify-between text-xs">
           {icon === "sunset" ? (
             <>
               <span>Imsak</span>

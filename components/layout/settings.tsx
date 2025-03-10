@@ -122,7 +122,7 @@ export function Settings() {
           <div className="flex items-center justify-between">
             <div className="space-y-0.5">
               <Label htmlFor="24h-format">24-Hour Format</Label>
-              <p className="text-sm text-muted-foreground">
+              <p className="text-muted-foreground text-sm">
                 Display time in 24-hour format
               </p>
             </div>
@@ -139,11 +139,11 @@ export function Settings() {
             <div className="space-y-0.5">
               <Label htmlFor="notifications">
                 Prayer Notifications
-                <span className="text-xs text-muted-foreground">
+                <span className="text-muted-foreground text-xs">
                   (coming soon)
                 </span>
               </Label>
-              <p className="text-sm text-muted-foreground">
+              <p className="text-muted-foreground text-sm">
                 Receive notifications for prayer times
               </p>
             </div>

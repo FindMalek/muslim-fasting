@@ -30,8 +30,8 @@ export function PrayerTimes() {
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
         <Card className="bg-primary/5">
           <CardContent className="flex items-center p-4">
-            <div className="mr-4 rounded-full bg-primary/10 p-3">
-              <Sunrise className="size-6 text-primary" />
+            <div className="bg-primary/10 mr-4 rounded-full p-3">
+              <Sunrise className="text-primary size-6" />
             </div>
             <div>
               <p className="text-sm font-medium">Suhur Ends (Imsak)</p>
@@ -42,8 +42,8 @@ export function PrayerTimes() {
 
         <Card className="bg-primary/5">
           <CardContent className="flex items-center p-4">
-            <div className="mr-4 rounded-full bg-primary/10 p-3">
-              <Sunset className="size-6 text-primary" />
+            <div className="bg-primary/10 mr-4 rounded-full p-3">
+              <Sunset className="text-primary size-6" />
             </div>
             <div>
               <p className="text-sm font-medium">Iftar (Maghrib)</p>

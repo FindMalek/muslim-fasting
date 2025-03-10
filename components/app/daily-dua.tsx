@@ -43,10 +43,10 @@ export function DailyDua() {
   }, [dua])
 
   return (
-    <div className="rounded-lg bg-card text-card-foreground">
+    <div className="bg-card text-card-foreground rounded-lg">
       <div className="flex flex-col space-y-1.5">
         <div className="flex items-center justify-between">
-          <h3 className="text-lg font-semibold leading-none tracking-tight">
+          <h3 className="text-lg leading-none font-semibold tracking-tight">
             Daily Dua
           </h3>
           <Button variant="ghost" size="icon" onClick={handleCopy}>
@@ -57,7 +57,7 @@ export function DailyDua() {
             )}
           </Button>
         </div>
-        <p className="text-sm text-muted-foreground">{dua.title}</p>
+        <p className="text-muted-foreground text-sm">{dua.title}</p>
       </div>
       <div className="p-6 pt-0">
         <div className="space-y-4">
@@ -66,7 +66,7 @@ export function DailyDua() {
           </p>
           <p className="text-sm italic">{dua.transliteration}</p>
           <p className="text-sm">{dua.translation}</p>
-          <p className="text-xs text-muted-foreground">Source: {dua.source}</p>
+          <p className="text-muted-foreground text-xs">Source: {dua.source}</p>
         </div>
       </div>
     </div>
