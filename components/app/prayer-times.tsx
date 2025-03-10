@@ -2,7 +2,6 @@
 
 import { Sunrise, Sunset } from "lucide-react"
 
-import { formatDate } from "@/lib/utils"
 import { useAladhanApi } from "@/hooks/use-aladhan-api"
 import { useGeolocation } from "@/hooks/use-geolocation"
 import { useSelectedDateStore } from "@/hooks/use-selected-date-store"
@@ -23,14 +22,10 @@ export function PrayerTimes() {
   }
   return (
     <div className="space-y-4">
-      <h2 className="text-center text-xl font-semibold">
-        {formatDate(selectedDate)}
-      </h2>
-
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
         <Card className="bg-primary/5">
           <CardContent className="flex items-center">
-            <div className="bg-primary/10 mr-4 rounded-full p-3">
+            <div className="bg-primary/10 mr-4 rounded-full p-4">
               <Sunrise className="text-primary size-6" />
             </div>
             <div>
@@ -42,7 +37,7 @@ export function PrayerTimes() {
 
         <Card className="bg-primary/5">
           <CardContent className="flex items-center">
-            <div className="bg-primary/10 mr-4 rounded-full p-3">
+            <div className="bg-primary/10 mr-4 rounded-full p-4">
               <Sunset className="text-primary size-6" />
             </div>
             <div>
