@@ -16,10 +16,13 @@ export function RamadanCalendar() {
   const { data, isLoading, isPending, isSuccess } = useAladhanApi(selectedDate)
 
   const prayerTimes = useMemo(() => {
-    if (!data) return null
-
-    return data.data.timings
-  }, [data])
+    if (isSuccess) {
+      return {
+        Imsak: data.data.timings.Imsak,
+        Maghrib: data.data.timings.Maghrib,
+      }
+    }
+  }, [data, isSuccess])
 
   const today = useMemo(() => new Date(), [])
   const [shownCalendarMonth, setShownCalendarMonth] = useState(today.getMonth())
@@ -127,7 +130,6 @@ export function RamadanCalendar() {
           </Button>
         </div>
       </div>
-
       <div className="grid grid-cols-7 gap-3 text-center">
         {daysOfWeek.map((day) => (
           <div key={day} className="text-muted-foreground truncate font-medium">
@@ -152,8 +154,7 @@ export function RamadanCalendar() {
           )
         })}
       </div>
-
-      {isLoading ? (
+      {(isLoading || isPending) && (
         <Card className="mt-6">
           <CardContent>
             <Skeleton className="mb-3 h-6 w-24" />
@@ -169,7 +170,8 @@ export function RamadanCalendar() {
             </div>
           </CardContent>
         </Card>
-      ) : prayerTimes ? (
+      )}
+      {isSuccess && prayerTimes && (
         <Card className="mt-6">
           <CardContent>
             <h3 className="mb-2 font-medium">
@@ -185,14 +187,6 @@ export function RamadanCalendar() {
                 <p className="font-medium">{prayerTimes.Maghrib || "N/A"}</p>
               </div>
             </div>
-          </CardContent>
-        </Card>
-      ) : (
-        <Card className="mt-6">
-          <CardContent>
-            <p className="text-muted-foreground text-center">
-              Unable to load prayer times
-            </p>
           </CardContent>
         </Card>
       )}
