@@ -1,26 +1,26 @@
 import { useEffect, useState } from "react"
 
+import { useLatLongStore } from "./use-lat-long-store"
+
 export const useGeolocation = () => {
-  const [location, setLocation] = useState<{
-    latitude: number | null
-    longitude: number | null
-  }>({
-    latitude: null,
-    longitude: null,
-  })
   const [error, setError] = useState<string | null>(null)
+  const { latitude, longitude, setLatitude, setLongitude } = useLatLongStore()
 
   useEffect(() => {
+    if (latitude && longitude) {
+      return
+    }
+
     if (!navigator.geolocation) {
       setError("Geolocation is not supported by your browser")
       return
     }
 
     const success = (position: GeolocationPosition) => {
-      setLocation({
-        latitude: position.coords.latitude,
-        longitude: position.coords.longitude,
-      })
+      const lat = parseFloat(position.coords.latitude.toFixed(5))
+      const long = parseFloat(position.coords.longitude.toFixed(5))
+      setLatitude(lat)
+      setLongitude(long)
     }
 
     const error = () => {
@@ -28,7 +28,7 @@ export const useGeolocation = () => {
     }
 
     navigator.geolocation.getCurrentPosition(success, error)
-  }, [])
+  }, [latitude, longitude, setLatitude, setLongitude])
 
-  return { location, error }
+  return { location: { latitude, longitude }, error }
 }
