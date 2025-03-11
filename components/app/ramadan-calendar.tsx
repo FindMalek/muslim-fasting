@@ -135,7 +135,7 @@ export function RamadanCalendar() {
 
       <div className="grid grid-cols-7 gap-3 text-center">
         {daysOfWeek.map((day) => (
-          <div key={day} className="text-sm font-medium">
+          <div key={day} className="text-muted-foreground truncate font-medium">
             {day}
           </div>
         ))}
