@@ -15,10 +15,7 @@ export default function Home() {
         <h1 className="mb-2 text-2xl font-bold">
           Your companion for Ramadan with accurate prayer times
         </h1>
-        <div className="text-muted-foreground mt-2 flex items-center justify-center text-sm">
-          <Icons.location className="mr-1 size-4" />
-          <TimezoneName />
-        </div>
+        <TimezoneName />
       </div>
 
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">

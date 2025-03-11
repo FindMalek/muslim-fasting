@@ -31,14 +31,17 @@ const fetchTimings = async (
 }
 
 export const useAladhanApi = (date: Date = new Date()) => {
-  // called to get the user's location and store it in the latLongStore
   const {
     location: { latitude, longitude },
+    isGeolocationLoading,
+    error,
   } = useGeolocation()
   const formattedDate = formatForAladhanApi(date)
-  return useQuery({
+  const query = useQuery({
     enabled: !!latitude && !!longitude,
     queryKey: ["timings", formattedDate, latitude, longitude],
     queryFn: () => fetchTimings(formattedDate, latitude, longitude),
   })
+
+  return { ...query, isGeolocationLoading, error }
 }
