@@ -1,6 +1,7 @@
 import "@/styles/globals.css"
 
 import type { Metadata, Viewport } from "next"
+import { SpeedInsights } from "@vercel/speed-insights/next"
 
 import { fonts } from "@/config/fonts"
 import { siteConfig } from "@/config/site"
@@ -85,6 +86,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
           <Analytics />
           <Toaster />
           <TailwindIndicator />
+          <SpeedInsights />
         </LayoutWrapper>
       </body>
     </html>

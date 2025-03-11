@@ -4,25 +4,21 @@ import { Skeleton } from "@/components/ui/skeleton"
 export function CountdownSkeleton() {
   return (
     <Card>
-      <CardContent className="p-4">
-        <div className="flex flex-col items-center space-y-3">
-          <Skeleton className="h-5 w-44" />
-          <div className="flex items-center justify-center space-x-4">
-            <div className="flex flex-col items-center">
-              <Skeleton className="h-10 w-14" />
-              <Skeleton className="mt-1 h-4 w-10" />
-            </div>
-            <Skeleton className="h-8 w-4" />
-            <div className="flex flex-col items-center">
-              <Skeleton className="h-10 w-14" />
-              <Skeleton className="mt-1 h-4 w-10" />
-            </div>
-            <Skeleton className="h-8 w-4" />
-            <div className="flex flex-col items-center">
-              <Skeleton className="h-10 w-14" />
-              <Skeleton className="mt-1 h-4 w-10" />
-            </div>
-          </div>
+      <CardContent>
+        <div className="mb-4 flex items-center justify-between">
+          <Skeleton className={"h-7 w-32"} />
+          <Skeleton className="size-7 rounded-full" />
+        </div>
+
+        <div className="my-6 flex justify-center text-4xl font-bold">
+          <Skeleton className={"h-10 w-36"} />
+        </div>
+
+        <Skeleton className="h-2" />
+
+        <div className="text-muted-foreground mt-2 flex justify-between text-xs">
+          <Skeleton className={"h-4 w-8"} />
+          <Skeleton className={"h-4 w-8"} />
         </div>
       </CardContent>
     </Card>

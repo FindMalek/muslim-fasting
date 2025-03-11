@@ -5,26 +5,19 @@ import { Sunrise, Sunset } from "lucide-react"
 
 import { formatTime } from "@/lib/utils"
 import { useAladhanApi } from "@/hooks/use-aladhan-api"
-import { useGeolocation } from "@/hooks/use-geolocation"
 
 import { CountdownSkeleton } from "@/components/app/countdown-skeleton"
 import { Card, CardContent } from "@/components/ui/card"
 import { Progress } from "@/components/ui/progress"
 
 export function CountdownTimer() {
-  const { location } = useGeolocation()
-  const today = useMemo(() => new Date(), [])
-  const { data, isLoading } = useAladhanApi(
-    today,
-    location.latitude,
-    location.longitude
-  )
+  const { data, isLoading, isPending, isSuccess } = useAladhanApi()
 
   const prayerTimes = useMemo(() => {
-    if (!data) return null
+    if (isLoading || !data) return null
 
     return data.data.timings
-  }, [data])
+  }, [data, isLoading])
   const [timeRemaining, setTimeRemaining] = useState<number>(0)
   const [targetTime, setTargetTime] = useState<Date | null>(null)
   const [targetName, setTargetName] = useState<string>("")
@@ -179,52 +172,45 @@ export function CountdownTimer() {
     return () => clearInterval(interval)
   }, [prayerTimes]) // Only depend on prayerTimes
 
-  if (isLoading) {
+  if (isLoading || isPending) {
     return <CountdownSkeleton />
   }
 
-  if (!prayerTimes) {
-    return (
-      <Card>
-        <CardContent className="p-6">
-          <p className="text-center">Unable to load prayer times</p>
+  return (
+    isSuccess &&
+    prayerTimes && (
+      <Card className="overflow-hidden">
+        <CardContent>
+          <div className="mb-4 flex items-center justify-between">
+            <h3 className="text-lg font-semibold">Time until {targetName}</h3>
+            {icon === "sunset" ? (
+              <Sunset className="text-primary size-5" />
+            ) : (
+              <Sunrise className="text-primary size-5" />
+            )}
+          </div>
+
+          <div className="my-6 text-center text-4xl font-bold">
+            {formatTime(timeRemaining)}
+          </div>
+
+          <Progress value={progress} className="h-2" />
+
+          <div className="text-muted-foreground mt-2 flex justify-between text-xs">
+            {icon === "sunset" ? (
+              <>
+                <span>Imsak</span>
+                <span>Iftar</span>
+              </>
+            ) : (
+              <>
+                <span>Iftar</span>
+                <span>Imsak</span>
+              </>
+            )}
+          </div>
         </CardContent>
       </Card>
     )
-  }
-
-  return (
-    <Card className="overflow-hidden">
-      <CardContent className="p-6">
-        <div className="mb-4 flex items-center justify-between">
-          <h3 className="text-lg font-semibold">Time until {targetName}</h3>
-          {icon === "sunset" ? (
-            <Sunset className="text-primary size-5" />
-          ) : (
-            <Sunrise className="text-primary size-5" />
-          )}
-        </div>
-
-        <div className="my-6 text-center text-4xl font-bold">
-          {formatTime(timeRemaining)}
-        </div>
-
-        <Progress value={progress} className="h-2" />
-
-        <div className="text-muted-foreground mt-2 flex justify-between text-xs">
-          {icon === "sunset" ? (
-            <>
-              <span>Imsak</span>
-              <span>Iftar</span>
-            </>
-          ) : (
-            <>
-              <span>Iftar</span>
-              <span>Imsak</span>
-            </>
-          )}
-        </div>
-      </CardContent>
-    </Card>
   )
 }

@@ -2,6 +2,7 @@ import { CountdownTimer } from "@/components/app/countdown-timer"
 import { DailyDua } from "@/components/app/daily-dua"
 import { PrayerTimes } from "@/components/app/prayer-times"
 import { RamadanCalendar } from "@/components/app/ramadan-calendar"
+import { SelectedDateLongFormat } from "@/components/app/selected-date-long-format"
 import { TimezoneName } from "@/components/app/timezone-name"
 import { Icons } from "@/components/shared/icons"
 import { Card, CardContent } from "@/components/ui/card"
@@ -14,16 +15,14 @@ export default function Home() {
         <h1 className="mb-2 text-2xl font-bold">
           Your companion for Ramadan with accurate prayer times
         </h1>
-        <div className="text-muted-foreground mt-2 flex items-center justify-center text-sm">
-          <Icons.location className="mr-1 size-4" />
-          <TimezoneName />
-        </div>
+        <TimezoneName />
       </div>
 
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
         <Card className="col-span-full lg:col-span-2">
-          <CardContent className="p-6">
-            <Tabs defaultValue="times">
+          <CardContent>
+            <SelectedDateLongFormat />
+            <Tabs className={"mt-6"} defaultValue="times">
               <TabsList className="grid w-full grid-cols-2">
                 <TabsTrigger value="times">
                   <Icons.clock className="mr-2 size-4" />
@@ -48,7 +47,7 @@ export default function Home() {
         </Card>
 
         <Card className="col-span-full lg:col-span-1">
-          <CardContent className="p-6">
+          <CardContent>
             <DailyDua />
           </CardContent>
         </Card>

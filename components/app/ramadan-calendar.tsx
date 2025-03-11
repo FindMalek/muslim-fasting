@@ -5,7 +5,6 @@ import { ChevronLeft, ChevronRight } from "lucide-react"
 
 import { formatDateShort } from "@/lib/utils"
 import { useAladhanApi } from "@/hooks/use-aladhan-api"
-import { useGeolocation } from "@/hooks/use-geolocation"
 import { useSelectedDateStore } from "@/hooks/use-selected-date-store"
 
 import { Button } from "@/components/ui/button"
@@ -14,17 +13,16 @@ import { Skeleton } from "@/components/ui/skeleton"
 
 export function RamadanCalendar() {
   const { selectedDate, setSelectedDate } = useSelectedDateStore()
-  const { location } = useGeolocation()
-  const { data, isLoading } = useAladhanApi(
-    selectedDate,
-    location.latitude,
-    location.longitude
-  )
-  const prayerTimes = useMemo(() => {
-    if (!data) return null
+  const { data, isLoading, isPending, isSuccess } = useAladhanApi(selectedDate)
 
-    return data.data.timings
-  }, [data])
+  const prayerTimes = useMemo(() => {
+    if (isSuccess) {
+      return {
+        Imsak: data.data.timings.Imsak,
+        Maghrib: data.data.timings.Maghrib,
+      }
+    }
+  }, [data, isSuccess])
 
   const today = useMemo(() => new Date(), [])
   const [shownCalendarMonth, setShownCalendarMonth] = useState(today.getMonth())
@@ -132,10 +130,9 @@ export function RamadanCalendar() {
           </Button>
         </div>
       </div>
-
       <div className="grid grid-cols-7 gap-3 text-center">
         {daysOfWeek.map((day) => (
-          <div key={day} className="text-sm font-medium">
+          <div key={day} className="text-muted-foreground truncate font-medium">
             {day}
           </div>
         ))}
@@ -157,26 +154,26 @@ export function RamadanCalendar() {
           )
         })}
       </div>
-
-      {isLoading ? (
+      {(isLoading || isPending) && (
         <Card className="mt-6">
-          <CardContent className="p-4">
-            <Skeleton className="mb-2 h-5 w-36" />
-            <div className="grid grid-cols-2 gap-2">
+          <CardContent>
+            <Skeleton className="mb-3 h-6 w-24" />
+            <div className="grid grid-cols-2 gap-2 text-sm">
               <div>
-                <Skeleton className="mb-1 h-4 w-24" />
-                <Skeleton className="h-5 w-20" />
+                <Skeleton className="mb-1 h-4 w-32" />
+                <Skeleton className="h-4 w-10" />
               </div>
               <div>
-                <Skeleton className="mb-1 h-4 w-24" />
-                <Skeleton className="h-5 w-20" />
+                <Skeleton className="mb-1 h-4 w-16" />
+                <Skeleton className="h-4 w-10" />
               </div>
             </div>
           </CardContent>
         </Card>
-      ) : prayerTimes ? (
+      )}
+      {isSuccess && prayerTimes && (
         <Card className="mt-6">
-          <CardContent className="p-4">
+          <CardContent>
             <h3 className="mb-2 font-medium">
               {formatDateShort(selectedDate)}
             </h3>
@@ -190,14 +187,6 @@ export function RamadanCalendar() {
                 <p className="font-medium">{prayerTimes.Maghrib || "N/A"}</p>
               </div>
             </div>
-          </CardContent>
-        </Card>
-      ) : (
-        <Card className="mt-6">
-          <CardContent className="p-4">
-            <p className="text-muted-foreground text-center">
-              Unable to load prayer times
-            </p>
           </CardContent>
         </Card>
       )}
