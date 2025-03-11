@@ -4,6 +4,8 @@ import { AladhanApiV1TimingsEndpointResponse } from "@/types"
 
 import { formatForAladhanApi } from "@/lib/utils"
 
+import { useGeolocation } from "./use-geolocation"
+
 const fetchTimings = async (
   date: string,
   latitude: number | null,
@@ -28,11 +30,11 @@ const fetchTimings = async (
   return response.json()
 }
 
-export const useAladhanApi = (
-  date: Date = new Date(),
-  latitude: number | null,
-  longitude: number | null
-) => {
+export const useAladhanApi = (date: Date = new Date()) => {
+  // called to get the user's location and store it in the latLongStore
+  const {
+    location: { latitude, longitude },
+  } = useGeolocation()
   const formattedDate = formatForAladhanApi(date)
   return useQuery({
     queryKey: ["timings", formattedDate, latitude, longitude],

@@ -5,7 +5,6 @@ import { ChevronLeft, ChevronRight } from "lucide-react"
 
 import { formatDateShort } from "@/lib/utils"
 import { useAladhanApi } from "@/hooks/use-aladhan-api"
-import { useGeolocation } from "@/hooks/use-geolocation"
 import { useSelectedDateStore } from "@/hooks/use-selected-date-store"
 
 import { Button } from "@/components/ui/button"
@@ -14,12 +13,8 @@ import { Skeleton } from "@/components/ui/skeleton"
 
 export function RamadanCalendar() {
   const { selectedDate, setSelectedDate } = useSelectedDateStore()
-  const { location } = useGeolocation()
-  const { data, isLoading } = useAladhanApi(
-    selectedDate,
-    location.latitude,
-    location.longitude
-  )
+  const { data, isLoading, isPending, isSuccess } = useAladhanApi(selectedDate)
+
   const prayerTimes = useMemo(() => {
     if (!data) return null
 

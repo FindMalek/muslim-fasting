@@ -3,23 +3,19 @@
 import { Sunrise, Sunset } from "lucide-react"
 
 import { useAladhanApi } from "@/hooks/use-aladhan-api"
-import { useGeolocation } from "@/hooks/use-geolocation"
 import { useSelectedDateStore } from "@/hooks/use-selected-date-store"
 
 import { PrayerTimesSkeleton } from "@/components/app/prayer-times-skeleton"
 import { Card, CardContent } from "@/components/ui/card"
 
 export function PrayerTimes() {
-  const { location } = useGeolocation()
   const selectedDate = useSelectedDateStore((state) => state.selectedDate)
-  const { data, isLoading } = useAladhanApi(
-    selectedDate,
-    location.latitude,
-    location.longitude
-  )
+  const { data, isLoading, isPending, isSuccess } = useAladhanApi(selectedDate)
+
   if (isLoading || !data) {
     return <PrayerTimesSkeleton />
   }
+
   return (
     <div className="space-y-4">
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2">

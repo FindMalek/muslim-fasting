@@ -2,20 +2,14 @@
 
 import { timezoneOptions } from "@/config/consts"
 import { useAladhanApi } from "@/hooks/use-aladhan-api"
-import { useGeolocation } from "@/hooks/use-geolocation"
 
 import { Skeleton } from "@/components/ui/skeleton"
 
 export function TimezoneName() {
-  const { location } = useGeolocation()
-  const { data, isPending } = useAladhanApi(
-    new Date(),
-    location.latitude,
-    location.longitude
-  )
+  const { data, isPending } = useAladhanApi()
 
   if (isPending || data === null) {
-    return <Skeleton className="h-4 w-20" />
+    return <Skeleton className="h-5 w-32" />
   }
 
   const timezone = timezoneOptions.find(
