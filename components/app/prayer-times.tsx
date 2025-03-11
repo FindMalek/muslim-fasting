@@ -26,7 +26,7 @@ export function PrayerTimes() {
     }
   }, [data, isSuccess])
 
-  if (isLoading || !data) {
+  if (isLoading || isPending) {
     return <PrayerTimesSkeleton />
   }
 
