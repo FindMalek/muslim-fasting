@@ -37,6 +37,7 @@ export const useAladhanApi = (date: Date = new Date()) => {
   } = useGeolocation()
   const formattedDate = formatForAladhanApi(date)
   return useQuery({
+    enabled: !!latitude && !!longitude,
     queryKey: ["timings", formattedDate, latitude, longitude],
     queryFn: () => fetchTimings(formattedDate, latitude, longitude),
   })
