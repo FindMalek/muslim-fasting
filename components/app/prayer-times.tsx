@@ -5,11 +5,13 @@ import { Sunrise, Sunset } from "lucide-react"
 
 import { useAladhanApi } from "@/hooks/use-aladhan-api"
 import { useSelectedDateStore } from "@/hooks/use-selected-date-store"
+import useTimeFormat from "@/hooks/use-time-format"
 
 import { PrayerTimesSkeleton } from "@/components/app/prayer-times-skeleton"
 import { Card, CardContent } from "@/components/ui/card"
 
 export function PrayerTimes() {
+  const { formatToSelectedTimeFormat } = useTimeFormat()
   const selectedDate = useSelectedDateStore((state) => state.selectedDate)
   const { data, isLoading, isPending, isSuccess } = useAladhanApi(selectedDate)
 
@@ -42,7 +44,9 @@ export function PrayerTimes() {
               </div>
               <div>
                 <p className="text-sm font-medium">Suhur Ends (Imsak)</p>
-                <p className="text-2xl font-bold">{prayerTimes.Imsak}</p>
+                <p className="text-2xl font-bold">
+                  {formatToSelectedTimeFormat(prayerTimes.Imsak)}
+                </p>
               </div>
             </CardContent>
           </Card>
@@ -54,7 +58,9 @@ export function PrayerTimes() {
               </div>
               <div>
                 <p className="text-sm font-medium">Iftar (Maghrib)</p>
-                <p className="text-2xl font-bold">{prayerTimes.Maghrib}</p>
+                <p className="text-2xl font-bold">
+                  {formatToSelectedTimeFormat(prayerTimes.Maghrib)}
+                </p>
               </div>
             </CardContent>
           </Card>
@@ -64,27 +70,35 @@ export function PrayerTimes() {
           <Card>
             <CardContent>
               <p className="text-sm font-medium">Fajr</p>
-              <p className="text-lg font-semibold">{prayerTimes.Fajr}</p>
+              <p className="text-lg font-semibold">
+                {formatToSelectedTimeFormat(prayerTimes.Fajr)}
+              </p>
             </CardContent>
           </Card>
           <Card>
             <CardContent>
               <p className="text-sm font-medium">Dhuhr</p>
-              <p className="text-lg font-semibold">{prayerTimes.Dhuhr}</p>
+              <p className="text-lg font-semibold">
+                {formatToSelectedTimeFormat(prayerTimes.Dhuhr)}
+              </p>
             </CardContent>
           </Card>
 
           <Card>
             <CardContent>
               <p className="text-sm font-medium">Asr</p>
-              <p className="text-lg font-semibold">{prayerTimes.Asr}</p>
+              <p className="text-lg font-semibold">
+                {formatToSelectedTimeFormat(prayerTimes.Asr)}
+              </p>
             </CardContent>
           </Card>
 
           <Card>
             <CardContent>
               <p className="text-sm font-medium">Isha</p>
-              <p className="text-lg font-semibold">{prayerTimes.Isha}</p>
+              <p className="text-lg font-semibold">
+                {formatToSelectedTimeFormat(prayerTimes.Isha)}
+              </p>
             </CardContent>
           </Card>
         </div>

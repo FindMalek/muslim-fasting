@@ -6,6 +6,7 @@ import { ChevronLeft, ChevronRight } from "lucide-react"
 import { formatDateShort } from "@/lib/utils"
 import { useAladhanApi } from "@/hooks/use-aladhan-api"
 import { useSelectedDateStore } from "@/hooks/use-selected-date-store"
+import useTimeFormat from "@/hooks/use-time-format"
 
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
@@ -13,6 +14,7 @@ import { Skeleton } from "@/components/ui/skeleton"
 
 export function RamadanCalendar() {
   const { selectedDate, setSelectedDate } = useSelectedDateStore()
+  const { formatToSelectedTimeFormat } = useTimeFormat()
   const { data, isLoading, isPending, isSuccess } = useAladhanApi(selectedDate)
 
   const prayerTimes = useMemo(() => {
@@ -180,11 +182,15 @@ export function RamadanCalendar() {
             <div className="grid grid-cols-2 gap-2 text-sm">
               <div>
                 <p className="text-muted-foreground">Suhur ends (Imsak):</p>
-                <p className="font-medium">{prayerTimes.Imsak || "N/A"}</p>
+                <p className="font-medium">
+                  {formatToSelectedTimeFormat(prayerTimes.Imsak) || "N/A"}
+                </p>
               </div>
               <div>
                 <p className="text-muted-foreground">Iftar time:</p>
-                <p className="font-medium">{prayerTimes.Maghrib || "N/A"}</p>
+                <p className="font-medium">
+                  {formatToSelectedTimeFormat(prayerTimes.Maghrib) || "N/A"}
+                </p>
               </div>
             </div>
           </CardContent>
