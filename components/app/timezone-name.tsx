@@ -7,7 +7,6 @@ import { timezoneOptions } from "@/config/consts"
 import { useAladhanApi } from "@/hooks/use-aladhan-api"
 
 import { Icons } from "@/components/shared/icons"
-import { Skeleton } from "@/components/ui/skeleton"
 
 export function TimezoneName() {
   const { data, isPending, isSuccess, isLoading, isGeolocationLoading } =
@@ -20,14 +19,20 @@ export function TimezoneName() {
       ),
     [data]
   )
+
+  if (isLoading || isPending || isGeolocationLoading) {
+    return (
+      <div className="text-muted-foreground mt-2 flex items-center justify-center gap-x-6 p-0.5 text-sm">
+        <Icons.location className="mr-1 size-4" />
+        <Loader2 className="mr-1 size-4 animate-spin" />
+      </div>
+    )
+  }
+
   return (
     <div className="text-muted-foreground mt-2 flex items-center justify-center text-sm">
       <Icons.location className="mr-1 size-4" />
-      {isGeolocationLoading && <Loader2 className="mr-1 size-4 animate-spin" />}
-      {(isLoading || isPending) && !isGeolocationLoading && (
-        <Skeleton className="h-5 w-32" />
-      )}
-      {isSuccess && <span>{timezone?.name ?? "Unknown"}</span>}
+      {isSuccess && timezone && <span>{timezone.name ?? "Unknown"}</span>}
     </div>
   )
 }
