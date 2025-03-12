@@ -5,14 +5,25 @@ type SelectedDateStoreState = {
 }
 
 type SelectedDateStoreActions = {
-  setSelectedDate: (date: SelectedDateStoreState["selectedDate"]) => void
+  setSelectedDate: (
+    newDate:
+      | SelectedDateStoreState["selectedDate"]
+      | ((
+          prevDate: SelectedDateStoreState["selectedDate"]
+        ) => SelectedDateStoreState["selectedDate"])
+  ) => void
 }
 
 type SelectedDateStore = SelectedDateStoreState & SelectedDateStoreActions
 
 const useSelectedDateStore = create<SelectedDateStore>((set) => ({
   selectedDate: new Date(),
-  setSelectedDate: (date: Date) => set({ selectedDate: date }),
+  setSelectedDate: (newDate) => {
+    set((state) => ({
+      selectedDate:
+        typeof newDate === "function" ? newDate(state.selectedDate) : newDate,
+    }))
+  },
 }))
 
 export { useSelectedDateStore }
