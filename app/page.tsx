@@ -1,3 +1,5 @@
+import { Suspense } from "react"
+
 import { CountdownTimer } from "@/components/app/countdown-timer"
 import { DailyDua } from "@/components/app/daily-dua"
 import { PrayerTimes } from "@/components/app/prayer-times"
@@ -34,13 +36,17 @@ export default function Home() {
                 </TabsTrigger>
               </TabsList>
               <TabsContent value="times" className="mt-6">
-                <PrayerTimes />
+                <Suspense>
+                  <PrayerTimes />
+                </Suspense>
                 <div className="mt-8">
                   <CountdownTimer />
                 </div>
               </TabsContent>
               <TabsContent value="calendar" className="mt-6">
-                <RamadanCalendar />
+                <Suspense>
+                  <RamadanCalendar />
+                </Suspense>
               </TabsContent>
             </Tabs>
           </CardContent>
