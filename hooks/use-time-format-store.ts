@@ -1,4 +1,5 @@
 import { create } from "zustand"
+import { createJSONStorage, persist } from "zustand/middleware"
 
 type TimeFormatStoreState = {
   is24hrFormat: boolean
@@ -10,9 +11,17 @@ type TimeFormatStoreActions = {
 
 type TimeFormatStore = TimeFormatStoreState & TimeFormatStoreActions
 
-const useTimeFormatStore = create<TimeFormatStore>((set) => ({
-  is24hrFormat: false,
-  setIs24hrFormat: (is24hrFormat) => set({ is24hrFormat }),
-}))
+const useTimeFormatStore = create(
+  persist<TimeFormatStore>(
+    (set) => ({
+      is24hrFormat: false,
+      setIs24hrFormat: (is24hrFormat) => set({ is24hrFormat }),
+    }),
+    {
+      name: "time-format",
+      storage: createJSONStorage(() => localStorage),
+    }
+  )
+)
 
 export { useTimeFormatStore }
