@@ -1,5 +1,3 @@
-import { Suspense } from "react"
-
 import { Calendar } from "@/components/app/calendar"
 import { CountdownTimer } from "@/components/app/countdown-timer"
 import { DailyDua } from "@/components/app/daily-dua"
@@ -42,9 +40,7 @@ export default function Home() {
                 </div>
               </TabsContent>
               <TabsContent value="calendar" className="mt-6">
-                <Suspense>
-                  <Calendar />
-                </Suspense>
+                <Calendar />
               </TabsContent>
             </Tabs>
           </CardContent>
