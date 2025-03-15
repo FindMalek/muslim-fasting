@@ -1,13 +1,8 @@
-"use client"
+import { Suspense } from "react"
 
-import { useCallback, useEffect } from "react"
-import { useRouter } from "next/navigation"
-
-import useTimeFormat from "@/hooks/use-time-format"
-
+import { TimeFormatSetting } from "@/components/layout/time-format-setting"
 import { Icons } from "@/components/shared/icons"
 import { Button } from "@/components/ui/button"
-import { Label } from "@/components/ui/label"
 import { Separator } from "@/components/ui/separator"
 import {
   Sheet,
@@ -17,26 +12,8 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet"
-import { Switch } from "@/components/ui/switch"
 
 export function Settings() {
-  const router = useRouter()
-  const { is24hrFormat, setIs24hrFormat } = useTimeFormat()
-
-  const handleFormatChange = useCallback(
-    (checked: boolean) => {
-      setIs24hrFormat(checked)
-    },
-    [setIs24hrFormat]
-  )
-
-  useEffect(() => {
-    if (is24hrFormat) {
-      router.push("?time_format=24h")
-    } else {
-      router.push("?time_format=12h")
-    }
-  }, [is24hrFormat, router])
   return (
     <Sheet>
       <SheetTrigger asChild>
@@ -98,20 +75,9 @@ export function Settings() {
           {/*</div>*/}
 
           {/*<Separator />*/}
-
-          <div className="flex items-center justify-between">
-            <div className="space-y-0.5">
-              <Label htmlFor="24h-format">24-Hour Format</Label>
-              <p className="text-muted-foreground text-sm">
-                Display time in 24-hour format
-              </p>
-            </div>
-            <Switch
-              id="24h-format"
-              checked={is24hrFormat}
-              onCheckedChange={handleFormatChange}
-            />
-          </div>
+          <Suspense>
+            <TimeFormatSetting />
+          </Suspense>
 
           <Separator />
 
