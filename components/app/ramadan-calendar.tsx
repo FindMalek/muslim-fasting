@@ -109,6 +109,18 @@ export function RamadanCalendar() {
     []
   )
 
+  const setSelectedDateToCalendar = useCallback(
+    (day: number) => {
+      if (isDateInCalendarSelected(day)) return
+      setSelectedDate((prevDate) => {
+        let newDate = new Date(prevDate)
+        newDate.setDate(day)
+        return newDate
+      })
+    },
+    [isDateInCalendarSelected, setSelectedDate]
+  )
+
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
@@ -148,7 +160,7 @@ export function RamadanCalendar() {
               <Button
                 variant="ghost"
                 className={`${isToday(day) ? "bg-primary/10 text-primary" : ""} ${isDateInCalendarSelected(day) ? "bg-primary text-primary-foreground hover:bg-primary/70" : ""}`}
-                onClick={() => selectDate(day)}
+                onClick={setSelectedDateToCalendar.bind(null, day)}
               >
                 {day}
               </Button>
