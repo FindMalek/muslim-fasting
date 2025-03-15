@@ -1,7 +1,7 @@
+import { Calendar } from "@/components/app/calendar"
 import { CountdownTimer } from "@/components/app/countdown-timer"
 import { DailyDua } from "@/components/app/daily-dua"
 import { PrayerTimes } from "@/components/app/prayer-times"
-import { RamadanCalendar } from "@/components/app/ramadan-calendar"
 import { SelectedDateLongFormat } from "@/components/app/selected-date-long-format"
 import { TimezoneName } from "@/components/app/timezone-name"
 import { Icons } from "@/components/shared/icons"
@@ -40,7 +40,7 @@ export default function Home() {
                 </div>
               </TabsContent>
               <TabsContent value="calendar" className="mt-6">
-                <RamadanCalendar />
+                <Calendar />
               </TabsContent>
             </Tabs>
           </CardContent>

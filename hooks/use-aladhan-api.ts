@@ -3,6 +3,7 @@ import { useQuery } from "@tanstack/react-query"
 import { AladhanApiV1TimingsEndpointResponse } from "@/types"
 
 import { formatForAladhanApi } from "@/lib/utils"
+import { useSelectedDateStore } from "@/hooks/use-selected-date-store"
 
 import { useGeolocation } from "./use-geolocation"
 
@@ -30,13 +31,14 @@ const fetchTimings = async (
   return response.json()
 }
 
-export const useAladhanApi = (date: Date = new Date()) => {
+export const useAladhanApi = () => {
   const {
     location: { latitude, longitude },
     isGeolocationLoading,
     error,
   } = useGeolocation()
-  const formattedDate = formatForAladhanApi(date)
+  const selectedDate = useSelectedDateStore((state) => state.selectedDate)
+  const formattedDate = formatForAladhanApi(selectedDate)
   const query = useQuery({
     enabled: !!latitude && !!longitude,
     queryKey: ["timings", formattedDate, latitude, longitude],

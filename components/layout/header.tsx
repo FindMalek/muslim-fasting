@@ -1,18 +1,18 @@
-import { Suspense } from "react"
 import Link from "next/link"
 
 import { siteConfig } from "@/config/site"
 
+import { Settings } from "@/components/layout/settings"
 import { Icons } from "@/components/shared/icons"
 import { ModeToggle } from "@/components/shared/mode-toggle"
 
 export function Header() {
   return (
-    <header className="sticky top-0 z-10 border-b bg-background">
+    <header className="bg-background sticky top-0 z-10 border-b">
       <div className="container mx-auto flex items-center justify-between px-4 py-3">
         <div className="flex items-center">
           <Link href="/" className="flex items-center text-xl font-bold">
-            <Icons.moonStar className="mr-2 size-5 text-primary" />
+            <Icons.moonStar className="text-primary mr-2 size-5" />
             <span>Muslim Fasting Friend</span>
           </Link>
         </div>
@@ -25,7 +25,7 @@ export function Header() {
           >
             <Icons.github className="size-5" />
           </Link>
-          <Suspense>{/*<Settings />*/}</Suspense>
+          <Settings />
         </div>
       </div>
     </header>
