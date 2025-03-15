@@ -1,5 +1,4 @@
 import { create } from "zustand"
-import { createJSONStorage, persist } from "zustand/middleware"
 
 type LatLongStoreState = {
   latitude: number
@@ -13,19 +12,11 @@ type LatLongStoreActions = {
 
 type SelectedDateStore = LatLongStoreState & LatLongStoreActions
 
-const useLatLongStore = create(
-  persist<SelectedDateStore>(
-    (set) => ({
-      latitude: 0,
-      longitude: 0,
-      setLatitude: (latitude) => set({ latitude }),
-      setLongitude: (longitude) => set({ longitude }),
-    }),
-    {
-      name: "lat-long",
-      storage: createJSONStorage(() => localStorage),
-    }
-  )
-)
+const useLatLongStore = create<SelectedDateStore>((set, get) => ({
+  latitude: 0,
+  longitude: 0,
+  setLatitude: (latitude) => set({ latitude }),
+  setLongitude: (longitude) => set({ longitude }),
+}))
 
 export { useLatLongStore }
