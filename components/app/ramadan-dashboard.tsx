@@ -1,8 +1,8 @@
+import { Calendar } from "@/components/app/calendar"
 import { CountdownTimer } from "@/components/app/countdown-timer"
 import { DailyDua } from "@/components/app/daily-dua"
 import { LocationSelector } from "@/components/app/location-selector"
 import { PrayerTimes } from "@/components/app/prayer-times"
-import { RamadanCalendar } from "@/components/app/ramadan-calendar"
 
 export function RamadanDashboard() {
   return (
@@ -23,7 +23,7 @@ export function RamadanDashboard() {
         <div className="space-y-6 lg:col-span-4">
           <LocationSelector />
 
-          <RamadanCalendar />
+          <Calendar />
         </div>
       </div>
     </div>
