@@ -36,9 +36,7 @@ export default function Home() {
                 </TabsTrigger>
               </TabsList>
               <TabsContent value="times" className="mt-6">
-                <Suspense>
-                  <PrayerTimes />
-                </Suspense>
+                <PrayerTimes />
                 <div className="mt-8">
                   <CountdownTimer />
                 </div>
