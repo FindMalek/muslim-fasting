@@ -15,7 +15,7 @@ import { Skeleton } from "@/components/ui/skeleton"
 export function RamadanCalendar() {
   const { selectedDate, setSelectedDate } = useSelectedDateStore()
   const { formatToSelectedTimeFormat } = useTimeFormat()
-  const { data, isLoading, isPending, isSuccess } = useAladhanApi(selectedDate)
+  const { data, isLoading, isPending, isSuccess } = useAladhanApi()
 
   const prayerTimes = useMemo(() => {
     if (isSuccess) {

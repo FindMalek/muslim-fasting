@@ -4,7 +4,6 @@ import { useMemo } from "react"
 import { Sunrise, Sunset } from "lucide-react"
 
 import { useAladhanApi } from "@/hooks/use-aladhan-api"
-import { useSelectedDateStore } from "@/hooks/use-selected-date-store"
 import useTimeFormat from "@/hooks/use-time-format"
 
 import { PrayerTimesSkeleton } from "@/components/app/prayer-times-skeleton"
@@ -12,8 +11,7 @@ import { Card, CardContent } from "@/components/ui/card"
 
 export function PrayerTimes() {
   const { formatToSelectedTimeFormat } = useTimeFormat()
-  const selectedDate = useSelectedDateStore((state) => state.selectedDate)
-  const { data, isLoading, isPending, isSuccess } = useAladhanApi(selectedDate)
+  const { data, isLoading, isPending, isSuccess } = useAladhanApi()
 
   const prayerTimes = useMemo(() => {
     if (isSuccess) {
