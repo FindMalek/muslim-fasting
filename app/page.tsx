@@ -1,6 +1,7 @@
 import { Calendar } from "@/components/app/calendar"
 import { CountdownTimer } from "@/components/app/countdown-timer"
 import { DailyDua } from "@/components/app/daily-dua"
+import { LocationSelector } from "@/components/app/location-selector"
 import { PrayerTimes } from "@/components/app/prayer-times"
 import { SelectedDateLongFormat } from "@/components/app/selected-date-long-format"
 import { TimezoneName } from "@/components/app/timezone-name"
@@ -18,7 +19,7 @@ export default function Home() {
         <TimezoneName />
       </div>
 
-      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+      <div className="grid min-w-0 gap-6 md:grid-cols-2 lg:grid-cols-3">
         <Card className="col-span-full lg:col-span-2">
           <CardContent>
             <SelectedDateLongFormat />
@@ -46,11 +47,14 @@ export default function Home() {
           </CardContent>
         </Card>
 
-        <Card className="col-span-full lg:col-span-1">
-          <CardContent>
-            <DailyDua />
-          </CardContent>
-        </Card>
+        <div className="col-span-full flex min-w-0 flex-col gap-6 lg:col-span-1">
+          <LocationSelector />
+          <Card>
+            <CardContent>
+              <DailyDua />
+            </CardContent>
+          </Card>
+        </div>
       </div>
     </div>
   )
