@@ -16,9 +16,6 @@ import { Toaster } from "@/components/ui/sonner"
 
 interface RootLayoutProps {
   children: React.ReactNode
-  params: {
-    locale: string
-  }
 }
 
 export const viewport: Viewport = {
